@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
-;@date Feb 20, 2012
+;@date Mar 13 2012
 ;@version 1.0
 
 ;Specifications files
@@ -12,18 +12,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;data structures
 (interface IColor
-  (sig set-rgb (r g b))
-  (sig set-hsv (h s v))
+  (sig set-rgb (rgb))
+  (sig set-hsv (hsv))
   (sig get-rgb (color))
   (sig get-hsv (color))
-  (sig color? (color))
-  (con get-rgb-types
-       (implies (color? color)
-                (mv-let (r g b)
-                        (get-rgb color)
-                        (and (and (natp r) (< r 256))
-                             (and (natp g) (< r 256))
-                             (and (natp b) (< r 256)))))))
+  (sig color? (color)))
 
 (interface IHeader)
 
