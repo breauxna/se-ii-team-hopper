@@ -20,7 +20,15 @@
 
 (interface IHeader)
 
-(interface IImage)
+(interface IImage
+  (sig image (hdr tree))
+  (sig add-pixel (x y color img))
+  (sig get-color (x y img))
+  (sig empty-image (hdr))
+  (sig is-image-empty? (img))
+  (sig change-size (img))
+  (sig img-height (img))
+  (sig img-width (img)))
 
 (interface IOperation
   (sig operation (op args)))
