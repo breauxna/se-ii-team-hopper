@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
-;@date Mar 13, 2012
+;@date Mar 27, 2012
 ;@version 1.0
 
 ;MColor module
@@ -88,7 +88,7 @@
     (if (equal (len color) 6)
         (mv-let (r g b h s v)
                 color
-                (and (rgb? (list r g b)) (hsv? (list h s v))))
+                (and (rgb? (list r g b)) (hsv? (list h s v)) (equal (set-rgb (list r g b)) color)))
         nil))
   
   (export IColor))
