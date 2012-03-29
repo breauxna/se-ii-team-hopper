@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
-;@date Mar 27, 2012
+;@date Mar 29, 2012
 ;@version 1.0
 
 ;MColor module
@@ -83,6 +83,24 @@
     (mv-let (r g b h s v)
             color
             (list h s v)))
+  
+  (defun get-r (color)
+    (nth 0 color))
+  
+  (defun get-g (color)
+    (nth 1 color))
+  
+  (defun get-b (color)
+    (nth 2 color))
+  
+  (defun get-h (color)
+    (nth 3 color))
+  
+  (defun get-s (color)
+    (nth 4 color))
+  
+  (defun get-v (color)
+    (nth 5 color))
   
   (defun color? (color)
     (if (equal (len color) 6)
