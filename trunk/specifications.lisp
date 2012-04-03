@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
-;@date Mar 13 2012
+;@date Apr 3 2012
 ;@version 1.0
 
 ;Specifications files
@@ -16,6 +16,12 @@
   (sig set-hsv (hsv))
   (sig get-rgb (color))
   (sig get-hsv (color))
+  (sig get-r (color))
+  (sig get-g (color))
+  (sig get-b (color))
+  (sig get-h (color))
+  (sig get-s (color))
+  (sig get-v (color))
   (sig color? (color)))
 
 (interface IHeader)
@@ -26,6 +32,7 @@
   (sig get-color (x y img))
   (sig empty-image (hdr))
   (sig is-image-empty? (img))
+  (sig img-header (img))
   (sig change-size (width height img))
   (sig img-height (img))
   (sig img-width (img)))
@@ -48,3 +55,6 @@
 (interface ICrop)
 
 (interface IResize)
+
+(interface IMerge
+  (sig merge (img1 img2 dir)))
