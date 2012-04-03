@@ -111,6 +111,9 @@
         nil
         t))
   
+  (defun img-header (img)
+    (cadr img))
+  
   (defun img-width (img)
     (caddr (car img)))
   

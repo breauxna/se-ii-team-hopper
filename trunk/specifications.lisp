@@ -26,6 +26,7 @@
   (sig get-color (x y img))
   (sig empty-image (hdr))
   (sig is-image-empty? (img))
+  (sig img-header (img))
   (sig change-size (width height img))
   (sig img-height (img))
   (sig img-width (img)))
