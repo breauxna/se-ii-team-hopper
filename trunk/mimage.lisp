@@ -111,9 +111,6 @@
         nil
         t))
   
-  (defun img-header (img)
-    (cadr img))
-  
   (defun img-width (img)
     (caddr (car img)))
   
@@ -238,10 +235,9 @@
         0 0 0 0 0 0 0 0 ;00
         ))
   
-  
   ;input output TODO remove
   
-  (defun read-n-bytes (n bytes-already-in channel state)
+  (defun read-n-bytes/bits (n bytes-already-in channel state)
     (if (or (not (integerp n)) (<= n 0))
         (mv bytes-already-in channel state)
         (mv-let (byte state) (read-byte$ channel state)
@@ -251,7 +247,7 @@
                                   (append byte bytes-already-in) channel state)))))
   
   (defconst *max-file-size* 4000000000) ;;limits input file to 4GB
-  (defun binary-file->byte-list (fname state)
+  (defun binary-file->bit-list (fname state)
     (mv-let (byte-list error state)
             (mv-let (channel state) (open-input-channel fname :byte state)
                     (if (null channel)
@@ -264,6 +260,9 @@
                                 (let ((state (close-input-channel chnl state)))
                                   (mv byte-list nil state)))))
             (mv (reverse byte-list) error state)))
+  ;should be in main
+  (defun read-file (fname state)
+    (bits->img (binary-file->bit-list (fname state))))
   
   (defun binary-write (byte-list channel state)
     (if (atom byte-list)
