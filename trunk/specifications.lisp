@@ -114,7 +114,8 @@
 
 (interface INegative)
 
-(interface IResize)
+(interface IResize
+  (sig resize-scale (img scale)))
 
 (interface IRotate)
 
