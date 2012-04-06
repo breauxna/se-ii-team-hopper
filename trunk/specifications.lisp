@@ -97,7 +97,8 @@
 
 (interface IDespeckle)
 
-(interface IGreyscale)
+(interface IGreyscale
+  (sig greyscale (img)))
 
 (interface IHistogram)
 
@@ -119,7 +120,8 @@
 
 (interface IRotate)
 
-(interface ISaturation)
+(interface ISaturation
+  (sig saturation (img scale)))
 
 (interface ISplitcolor)
 

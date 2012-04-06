@@ -21,7 +21,7 @@
         (if (< x w)
             (let* ((r (get-r (get-color x y img1)))
                    (g (get-g (get-color x y img1)))
-                   (r (get-b (get-color x y img1)))
+                   (b (get-b (get-color x y img1)))
                    (r-grey (* r .30))
                    (g-grey (* g .59))
                    (b-grey (* b .11)))
