@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
-;@date Mar 29, 2012
+;@date Apr 5, 2012
 ;@version 1.0
 
 ;MColor module
@@ -13,6 +13,9 @@
 (require "specifications.lisp")
 
 (module MColor
+  (import IMath)
+  
+  ;checks to see if a list of r, g, and b values falls within to proper ranges
   (defun rgb? (rgb)
     (if (equal (len rgb) 3)
         (mv-let (r g b)
@@ -22,6 +25,7 @@
                      (rationalp b) (>= b 0) (<= b 1)))
         nil))
   
+  ;checks to see if a list of h, s, and v values falls within to proper ranges
   (defun hsv? (hsv)
     (if (equal (len hsv) 3)
         (mv-let (h s v)
@@ -31,6 +35,7 @@
                      (rationalp v) (>= v 0) (<= v 1)))
         nil))
   
+  ;generates a color data structure given r, g, and b values
   ;red, green, blue are [0, 1]
   (defun set-rgb (rgb)
     (if (rgb? rgb)
@@ -56,6 +61,8 @@
                   (list r g b h s v)))
         nil))
   
+  ;generates a color data structure given h, s, and v values
+  ;hue, saturation, and value are [0, 1]
   (defun set-hsv (hsv)
     (if (hsv? hsv)
         (mv-let (h s v)
@@ -74,34 +81,47 @@
                     ((equal (mod i 6) 5) (list v p q h s v)))))
         nil))
   
+  ;returns the r, g, and b values of the color
   (defun get-rgb (color)
     (mv-let (r g b h s v)
             color
             (list r g b)))
   
+  ;returns the h, s, and v values of the color
   (defun get-hsv (color)
     (mv-let (r g b h s v)
             color
             (list h s v)))
   
+  ;returns the r value of the color
   (defun get-r (color)
     (nth 0 color))
   
+  ;returns the g value of the color
   (defun get-g (color)
     (nth 1 color))
   
+  ;returns the b value of the color
   (defun get-b (color)
     (nth 2 color))
-  
+ 
+  ;returns the h value of the color 
   (defun get-h (color)
     (nth 3 color))
   
+  ;returns the s value of the color
   (defun get-s (color)
     (nth 4 color))
   
+  ;returns the v value of the color
   (defun get-v (color)
     (nth 5 color))
   
+  ;returns the brightness of the color
+  (defun get-brightness (color)
+    (average (get-rgb color)))
+  
+  ;checks to see whether or not the given list is a proper color structure
   (defun color? (color)
     (if (equal (len color) 6)
         (mv-let (r g b h s v)
