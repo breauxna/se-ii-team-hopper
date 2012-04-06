@@ -11,8 +11,6 @@
 ; Module that applies a greyscale to an img that results in a new "black-and-white" image
 (module MGrayscale
   
-  (include-book "list-utilities" :dir :teachpacks)
-  (include-book "io-utilities" :dir :teachpacks)
   (import IImage)
   (import IColor)
   

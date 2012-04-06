@@ -2,7 +2,6 @@
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-;TODO: contrast
 ;@author: Toby Kraft
 ;@date:April 5, 2012
 ;@version: 1.0
@@ -12,8 +11,6 @@
 ; Module for increasing or decreasing pixel color saturation based on a scale %
 (module MSaturation
   
-  (include-book "list-utilities" :dir :teachpacks)
-  (include-book "io-utilities" :dir :teachpacks)
   (import IImage)
   (import IColor)
   
@@ -23,16 +20,15 @@
     (if (< y h)
         (if (< x w)
             (let* ((rgb (get-color (x y img1)))
-                   (r (get-r (get-color x y img1)))
-                   (g (get-g (get-color x y img1)))
-                   (b (get-b (get-color x y img1)))
+                   (r (get-r rgb))
+                   (g (get-g rgb))
+                   (b (get-b rgb))
                    (s (get-s (rgb)))
                    (h (get-h (rgb)))
                    (v (get-v (rgb)))
                    (scaledsat (* s (/ 100 scale)))
-                   (scaledhsv (set-hsv (list r g b h scaledsat v)))
-                   (scaledcolor (get-rgb scaledhsv)))
-              (apply-sat-xy img1 (add-pixel (x y scaledcolor img2)) scale (+ 1 x) y h w)))
+                   (scaledcolor (set-hsv (list r g b h scaledsat v))))
+              (apply-sat-xy img1 (add-pixel x y scaledcolor img2) scale (+ 1 x) y h w)))
         (apply-sat-xy img1 img2 scale 0 (+ 1 y) h w))
     img2)
   

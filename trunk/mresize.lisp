@@ -10,8 +10,7 @@
 
 ; Module for resizing an image based on a scale given as a %.
 (module MResize  
-  (include-book "list-utilities" :dir :teachpacks)
-  (include-book "io-utilities" :dir :teachpacks)
+  
   (import IImage)
   
   ; uses nearest-neighbor pixel resixe algorithm to shrink the image based on a scale
