@@ -8,7 +8,7 @@
 
 (require "specifications.lisp")
 
-; Module for 
+; Module that applies a greyscale to an img that results in a new "black-and-white" image
 (module MGrayscale
   
   (include-book "list-utilities" :dir :teachpacks)
@@ -16,6 +16,7 @@
   (import IImage)
   (import IColor)
   
+  ;applies the greyscale to every pixel of the original image and returns a new image
   (defun greyscale-xy (img1 img2 x y h w)
      (if (< y h)
         (if (< x w)
@@ -29,6 +30,7 @@
         (greyscale-xy img1 img2 0 (+ 1 y) h w))
     img2)
   
+  ;gets the h and w from the image, and calls greyscale-xy to apply greyscaling
   (defun greyscale (img)
     (let* ((h (img-height img))
            (w (img-height img)))
