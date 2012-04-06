@@ -107,7 +107,8 @@
 
 (interface ICrop)
 
-(interface IContrast)
+(interface IContrast
+  (sig contrast (img scalar)))
 
 (interface IDespeckle)
 
