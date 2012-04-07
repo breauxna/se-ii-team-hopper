@@ -42,7 +42,7 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img))
              (< 0 (img-height img)))
-        (get-negative img (empty-image img) 0 0)
+        (get-negative img (empty-image (img-header img)) 0 0)
         img))
   
   (export INegative))

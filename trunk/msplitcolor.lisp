@@ -82,9 +82,9 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img)) 
              (< 0 (img-height img)))
-        (list (get-red-tree img (empty-image img) 0 0) 
-              (get-green-tree img (empty-image img) 0 0) 
-              (get-blue-tree img (empty-image img) 0 0))
+        (list (get-red-tree img (empty-image (img-header img)) 0 0) 
+              (get-green-tree img (empty-image (img-header img)) 0 0) 
+              (get-blue-tree img (empty-image (img-header img)) 0 0))
         img))
   
   (export ISplitcolor))

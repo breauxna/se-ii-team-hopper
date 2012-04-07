@@ -40,7 +40,7 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img))
              (< 0 (img-height img)))
-        (rotate90 img (empty-image img) 0 0)
+        (rotate90 img (empty-image (img-header img)) 0 0)
         img))
   
   ;Recursive function to rotate image 180 degress.
@@ -66,7 +66,7 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img))
              (< 0 (img-height img)))
-        (rotate180 img (empty-image img) 0 0)
+        (rotate180 img (empty-image (img-header img)) 0 0)
         img))
   
   ;Recursive function to rotate image 270 degress.
@@ -94,7 +94,7 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img)) 
              (< 0 (img-height img)))
-        (rotate270 img (empty-image img) 0 0)
+        (rotate270 img (empty-image (img-header img)) 0 0)
         img))
   
   ;Wrapper function to rotate an image. It checks if degrees

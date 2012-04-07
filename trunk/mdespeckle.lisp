@@ -90,7 +90,7 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img)) 
              (< 0 (img-height img)))
-        (do-despeckle img (empty-image img) 0 0)
+        (do-despeckle img (empty-image (img-header img)) 0 0)
         img))
   
   (export IDespeckle))
