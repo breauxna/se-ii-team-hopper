@@ -105,11 +105,30 @@
 (interface IBlur
   (sig blur (img x y radius)))
 
-(interface IBorder)
+;@param img bitmap image
+;@param border-size size of the border in pixels
+;@param border-color color of the border (color data structure)
+;Adds specified border size and color to image
+(interface IBorder
+  (sig border (img border-size border-color)))
 
-(interface ICrop)
+;@param image bitmap image
+;@param target-color the hue value of the color you wish to change
+;@param radius creates a range around the target-color from (tc-r - tc+r)
+;@param update-color change all target-colors to this hue value between 0-1
+;val should be between 0-1 if 0 targets target color, if 1 targets all colors
+(interface IColormod
+  (sig colormod (image target-color radius update-color)))
 
-(interface IContrast)
+;@param img bitmap image
+;@param (x1, y1) top-left data point
+;@param (x2, y2) bottom-right data point
+;Crop the image from (x1, y1) to (x2, y2)
+(interface ICrop
+  (sig crop (img x1 y1 x2 y2)))
+
+(interface IContrast
+  (sig contrast (img scalar)))
 
 (interface IDespeckle)
 
@@ -118,7 +137,11 @@
 
 (interface IHistogram)
 
-(interface IHue)
+;@param img bitmap image
+;@param hue-value hue-value between 0-1
+;Adds specificed hue value each pixel in picture
+(interface IHue
+  (sig hue (img hue-value)))
 
 (interface IMask
   (sig mask (img1 img2)))
