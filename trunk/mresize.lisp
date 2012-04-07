@@ -39,10 +39,11 @@
   (defun enlarge-xy (scale x y img1 img2 w2 h2 hratio wratio) 
     (if (< y h2)
         (if (< x w2)
-            (let * ((px (floor (* x wratio)))
-                    (py (floor (* y hratio))))
+            (let* ((px (floor (* x wratio)))
+                   (py (floor (* y hratio))))
               (enlarge-xy scale (+ x 1) y img1 (add-pixel x y (get-color px py img1) img2) w2 h2 hratio wratio)))
         (enlarge-xy scale 0 (+ 1 y) img1 img2 w2 h2 hratio wratio))
+    
     img2)
   
   ; finds the old width and height, calculates the new h&w, finds a height ratio and width ratio, and
@@ -57,15 +58,18 @@
       
     (enlarge-xy scale 0 0 img1 (change-size w2 h2 img2) w2 h2 hratio wratio)))
   
-  ; calls the enlarge function if scale is > 100%, calls shrink if scale is <100%, or returns the image is scale == 100%
+  ; calls the enlarge function if scale is > 100%, calls shrink if scale is <100%, 
+  ; or returns the image is scale == 100%
   (defun resize-scale (img scale)
     (if (> scale 0)
         (cond
           ((equal scale 100)
            img)
           ((> scale 100)
-           (enlarge-scale scale img (empty-image (get-header img))))
+           (enlarge-scale scale img (empty-image (img-header img))))
           ((< scale 100)
-           (shrink-scale scale img (empty-image (get-header img))))))
+           (shrink-scale scale img (empty-image (img-header img))))))
+    
     img)
+  
   (export IResize))
