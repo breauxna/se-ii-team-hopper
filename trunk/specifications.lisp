@@ -110,7 +110,9 @@
 (interface IContrast
   (sig contrast (img scalar)))
 
-(interface IDespeckle)
+;performs despeckle on image
+(interface IDespeckle
+  (sig despeckle (img)))
 
 (interface IGreyscale
   (sig greyscale (img)))
@@ -132,17 +134,27 @@
 (interface IMirror
   (sig mirror (img axis)))
 
-(interface INegative)
+;gets the negative of an image
+(interface INegative
+  (sig negative (img)))
 
 (interface IResize
   (sig resize-scale (img scale)))
 
-(interface IRotate)
+;Rotates an image 90, 180, or 270 degrees based on what is given
+;in degrees field. Degrees field can be greater than 270 as long
+;as it is divisible by 90
+(interface IRotate
+  (sig rotate (img degrees)))
 
 (interface ISaturation
   (sig saturation (img scale)))
 
-(interface ISplitcolor)
+;Takes an image and splits into three images with each color 
+;channel as the only one represented in each. It will return
+;a list of these three new trees.
+(interface ISplitcolor
+  (sig splitcolor (img)))
 
 (interface IUnsharpmask
   (sig unsharpmask (img)))

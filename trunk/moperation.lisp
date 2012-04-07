@@ -35,18 +35,21 @@
                           (str->rat (caddr args))
                           (str->rat (cadddr args))))
         nil))
+  
   ;Checks if blur has no arguments
   ;Format - (blur)
   (defun blur (args)
     (if (equal args nil)
         (list 'blur args)
         nil))
+  
   ;Checks if unsharpmask has no arguments
   ;Format - (unsharpmask)
   (defun unsharpmask (args)
     (if (equal args nil)
         (list 'unsharpmask args)
         nil))
+  
   ;Checks if merge has right arguments
   ;Format - (merge path)
   (defun merge (args)
@@ -55,6 +58,7 @@
              (equal (cdr args) nil))
         (list 'merge args)
         nil))
+  
   ;Checks if border has right arguments
   ;Format - (border width)
   (defun border (args)
@@ -63,18 +67,21 @@
              (equal (cdr args) nil))
         (list 'border (list (str->rat (car args))))
         nil))
+  
   ;Checks if negative has no arguments
   ;Format - (negative)
   (defun negative (args)
     (if (equal args nil)
         (list 'negative args)
         nil))
+  
   ;Checks if histogram has no arguments
   ;Format - (histogram)
   (defun histogram (args)
     (if (equal args nil)
         (list 'histogram args)
         nil))
+  
   ;Checks if rotate has right arguments
   ;Format - (rotate degrees)
   (defun rotate (args)
@@ -83,6 +90,7 @@
              (equal (cdr args) nil))
         (list 'rotate (list (str->rat (car args))))
         nil))
+  
   ;Checks if resize has right arguments
   ;Format - (resize scale)
   (defun resize (args)
@@ -91,6 +99,7 @@
              (equal (cdr args) nil))
         (list 'resize (list (str->rat (car args))))
         nil))
+  
   ;Checks if greyscale has no arguments
   ;Format - (greyscale)
   (defun greyscale (args)
@@ -105,24 +114,28 @@
              (equal (cdr args) nil))
         (list 'saturation (list (str->rat (car args))))
         nil))
+  
   ;Checks if contrast has right arguments
   ;Format - (contrast)
   (defun contrast (args)
     (if (equal args nil)
         (list 'contrast args)
         nil))
+  
   ;Checks if splitcolor has right arguments
   ;Format - (splitcolor)
   (defun splitcolor (args)
     (if (equal args nil)
         (list 'splitcolor args)
         nil))
+  
   ;Checks if mirror has right arguments
   ;Format - (mirror)
   (defun mirror (args)
     (if (equal args nil)
         (list 'mirror args)
         nil))
+  
   ;Checks if hue has right arguments
   ;Format - (hue amount)
   (defun hue (args)
@@ -131,6 +144,7 @@
              (equal (cdr args) nil))
         (list 'hue (list (str->rat (car args))))
         nil))
+  
   ;Checks if mask has right arguments
   ;Format - (mask path)
   (defun mask (args)
@@ -139,6 +153,7 @@
              (equal (cdr args) nil))
         (list 'mask args)
         nil))
+  
   ;Checks if despeckle has right arguments
   ;Format - (despeckle)
   (defun despeckle (args)
@@ -169,5 +184,5 @@
               ((string-equal op "despeckle") (despeckle args))
               (t nil))
         nil)) 
-             
+  
   (export IOperation))
