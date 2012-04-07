@@ -240,11 +240,6 @@
   
   ;output TODO remove
   
-  
-  ;should be in main
-  (defun read-file (fname state)
-    (bits->img (binary-file->bit-list (fname state))))
-  
   (defun binary-write (byte-list channel state)
     (if (atom byte-list)
         (mv channel state)

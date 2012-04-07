@@ -7,6 +7,15 @@
 (module MInput
   
   (import IImage)
+  
+  (defun rat->byte-rec (rat exponent)
+    (if (< exponent 1)
+        nil
+        (cons (if (>= rat exponent) 1 0)
+           (rat->byte-rec (if (>= rat exponent) (- rat exponent) rat) (/ exponent 2)))))
+  
+  (defun rat->byte (rat)
+    (rat->byte-rec rat 128))
 
   (defun read-n-bytes/bits (n bytes-already-in channel state)
     (if (or (not (integerp n)) (<= n 0))
@@ -15,7 +24,7 @@
                 (if (null byte)
                     (mv bytes-already-in channel state)
                     (read-n-bytes/bits (- n 1)
-                                  (append byte bytes-already-in) channel state)))))
+                                  (append (rat->byte byte) bytes-already-in) channel state)))))
   
   (defconst *max-file-size* 4000000000) ;;limits input file to 4GB
   (defun binary-file->bit-list (fname state)
@@ -33,6 +42,6 @@
             (mv (reverse byte-list) error state)))
   
   (defun read-file (fname state)
-    (bits->img (binary-file->bit-list fname state)))
+    (bits->img (car (binary-file->bit-list fname state))))
   
   (export IInput))

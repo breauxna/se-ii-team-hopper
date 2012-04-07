@@ -14,5 +14,9 @@
 (require "mcolor.lisp")
 (require "tcolor.lisp")
 
-(link TestSuite (MMath Moperation Toperation MColor TColor))
+(require "mimage.lisp")
+(require "minput.lisp")
+(require "tinput.lisp")
+
+(link TestSuite (MMath Moperation Toperation MColor TColor MImage MInput TInput))
 (invoke TestSuite)
