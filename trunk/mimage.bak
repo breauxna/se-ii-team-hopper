@@ -1,0 +1,44 @@
+;; The first four lines of this file were added by Dracula.
+;; They tell DrScheme that this is a Dracula Modular ACL2 program.
+;; Leave these lines unchanged so that DrScheme can properly load this file.
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+;@author Youming Lin
+;@date Apr 7, 2012
+;@version 1.0
+
+(require "specifications.lisp")
+
+(module MImage
+  (include-book "avl-rational-keys" :dir :teachpacks)
+  
+  (defun img-width (img)
+    (car img))
+  
+  (defun img-height (img)
+    (cadr img))
+  
+  (defun img-tree (img)
+    (caddr img))
+  
+  (defun empty-image (width height)
+    (list width height (empty-tree)))
+  
+  (defun get-color (x y img)
+    (cdr (avl-retrieve (cdr (avl-retrieve (img-tree img) x)) y)))
+  
+  (defun add-pixel (x y color img)
+    (list (img-width img)
+          (img-height img)
+          (avl-insert (img-tree img)
+                      x
+                      (avl-insert (cdr (avl-retrieve (img-tree img) x))
+                                  y
+                                  color))))
+  
+  (defun change-size (width height img)
+    (list width height (img-tree img)))
+  
+  (defun is-image-empty? (img)
+    (empty-tree? (img-tree img)))
+  
+  (export IImage))
