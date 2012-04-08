@@ -1,11 +1,12 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
-;@author Youming Lin
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+;@author Michael Brandt
 ;@date Apr 8, 2012
-;@version 1.0
+;@version 1.1
 
+(require "specifications.lisp")
 (require "mmath.lisp")
 (require "mcolor.lisp")
 (require "mimage.lisp")
@@ -14,10 +15,10 @@
 (require "minput.lisp")
 (require "mblur.lisp")
 (require "mborder.lisp")
-(require "mbrightness.lisp")
 (require "mcolormod.lisp")
 (require "mcontrast.lisp")
 (require "mcrop.lisp")
+(require "mbrightness.lisp")
 (require "mgreyscale.lisp")
 (require "mhistogram.lisp")
 (require "mhue.lisp")
@@ -31,41 +32,81 @@
 (require "msplitcolor.lisp")
 
 (module MMain
-  (include-book "io-utilities" :dir :teachpacks)
   (set-state-ok t)
   
-  (import IBlur)
-  (import IBorder)
-  (import IBrightness)
-  (import IColormod)
-  (import IContrast)
-  (import ICrop)
-  (import IGreyscale)
-  (import IHistogram)
-  (import IHue)
   (import IInput)
-  (import IMerge)
+  (import IHue)
+  (import IBrightness)
   (import IMirror)
   (import INegative)
+  (import IRotate)
+  (import ISplitcolor)
   (import IOperation)
   (import IOutput)
   (import IRead-Operations)
-  (import IResize)
-  (import IRotate)
+  (import IContrast)
   (import ISaturation)
-  (import ISplitcolor)
+  (import IGreyscale)
+  (import IResize)
+  (import IHistogram)
+  (import IBorder)
+  (import IMerge)
+  (import IBlur)
+  (import ICrop)
   
-;  (defun main (ops-file bmp-input bmp-output)
-;    (write-bmp-file (merge (read-bmp-file ops-file) (read-bmp-file bmp-input) 'up) bmp-output))
+  (defun perform-op (operation img)
+    (if (listp operation)
+        (let ((args (cadr operation))
+              (op (car operation)))
+        (cond ((equal op 'crop)
+               (crop img (first args) (second args) (third args)
+                     (fourth args)))
+              ((equal op 'blur)
+               (blur img (first args) (second args) (third args)))
+              ((equal op 'merge)
+               (merge img (read-bmp-file (first args)) (second args)))
+              ((equal op 'border) 
+               (border img (first args) (second args)))
+              ((equal op 'negative)
+               (negative img))
+              ((equal op 'histogram) 
+               (histogram img))
+              ((equal op 'rotate)
+               (rotate img (first args)))
+              ((equal op 'resize) 
+               (resize-scale img (first args)))
+              ((equal op 'greyscale)
+               (greyscale img))
+              ((equal op 'saturation)
+               (saturation img (first args)))
+              ((equal op 'contrast)
+               (contrast img (first args)))
+              ((equal op 'splitcolor)
+               (splitcolor img (first args)))
+              ((equal op 'mirror)
+               (mirror img (first args)))
+              ((equal op 'hue)
+               (hue img (first args)))
+              ((equal op 'brightness)
+               (brightness img (first args)))
+              (t nil)))
+        nil)) 
+  
+  (defun process-ops (ops img-in)
+    (if (endp ops)
+        img-in
+        (process-ops (cdr ops) (perform-op (car ops) img-in))))
   
   (defun main (ops-file bmp-input bmp-output)
-    (string-list->file bmp-output (histogram (read-bmp-file bmp-input)) state))
+    (let ((ops (read-operations ops-file))
+          (img-in (read-bmp-file bmp-input)))
+      (write-bmp-file (process-ops ops img-in) bmp-output)))
   
   (export IMain))
 
 (link Run (MMath MColor MImage MOperation MRead-Operations
-                  MInput MBlur MBorder MBrightness MColormod
-                  MContrast MCrop MGreyscale MHistogram MHue
-                  MMerge MMirror MNegative MOutput MResize
-                  MRotate MSaturation MSplitcolor MMain))
+                 MInput MBlur MBorder MColormod MContrast
+                 MCrop MBrightness MGreyscale MHistogram MHue
+                 MMerge MMirror MNegative MOutput MResize
+                 MRotate MSaturation MSplitcolor MMain))
 (invoke Run)
