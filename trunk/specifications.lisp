@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
 ;@date Apr 7, 2012
 ;@version 1.0
@@ -133,8 +133,8 @@
 (interface ICrop
   (sig crop (img x1 y1 x2 y2)))
 
-(interface IDespeckle
-  (sig despeckle (img)))
+(interface IBrightness
+  (sig brightness (img amount)))
 
 (interface IGreyscale
   (sig greyscale (img)))
@@ -174,4 +174,4 @@
   (sig saturation (img scale)))
 
 (interface ISplitcolor
-  (sig splitcolor (img)))
+  (sig splitcolor (img color)))

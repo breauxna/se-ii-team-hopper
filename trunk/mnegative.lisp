@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Kyle Morse
 ;@date: March 27, 2012
 ;@version: 1.0
@@ -20,19 +20,16 @@
     (if (< y (img-height old))
         (if (< x (img-width old))
             (get-negative old 
-                      (add-pixel x
-                                 y
-                                 (set-rgb (list (- 1 (get-r (get-color x y old)))
-                                                (- 1 (get-g (get-color x y old)))
-                                                (- 1 (get-b (get-color x y old)))))
-                                 new)  
-                      (+ 1 x) 
-                      y)
-            (get-negative old 
-                          new 
-                          0 
-                          (+ 1 y)))
-            new))
+                          (add-pixel x
+                                     y
+                                     (set-rgb (list (- 1 (get-r (get-color x y old)))
+                                                    (- 1 (get-g (get-color x y old)))
+                                                    (- 1 (get-b (get-color x y old)))))
+                                     new)  
+                          (+ 1 x) 
+                          y)
+            (get-negative old new 0 (+ 1 y)))
+        new))
   
   ;This is the wrapper function for negative.
   ;Takes in an image and makes sure the width and height

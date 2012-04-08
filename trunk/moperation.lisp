@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Kyle Morse
 ;@date: Feb 20, 2012
 ;@version: 1.0
@@ -40,13 +40,6 @@
   (defun blur (args)
     (if (equal args nil)
         (list 'blur args)
-        nil))
-  
-  ;Checks if unsharpmask has no arguments
-  ;Format - (unsharpmask)
-  (defun unsharpmask (args)
-    (if (equal args nil)
-        (list 'unsharpmask args)
         nil))
   
   ;Checks if merge has right arguments
@@ -144,20 +137,13 @@
         (list 'hue (list (str->rat (car args))))
         nil))
   
-  ;Checks if mask has right arguments
-  ;Format - (mask path)
-  (defun mask (args)
+  ;Checks if brightness has right arguments
+  ;Format - (despeckle amount)
+  (defun brightness (args)
     (if (and (consp args)
-             (stringp (car args))
+             (number? (car args))
              (equal (cdr args) nil))
-        (list 'mask args)
-        nil))
-  
-  ;Checks if despeckle has right arguments
-  ;Format - (despeckle)
-  (defun despeckle (args)
-    (if (equal args nil)
-        (list 'despeckle args)
+        (list 'brightness (list (str->rat (car args))))
         nil))
   
   ;Wrapper function that creates an operation data structure
@@ -166,7 +152,6 @@
     (if (stringp op)
         (cond ((string-equal op "crop") (crop args))
               ((string-equal op "blur") (blur args))
-              ((string-equal op "unsharpmask") (unsharpmask args))
               ((string-equal op "merge") (merge args))
               ((string-equal op "border") (border args))
               ((string-equal op "negative") (negative args))
@@ -179,8 +164,7 @@
               ((string-equal op "splitcolor") (splitcolor args))
               ((string-equal op "mirror") (mirror args))
               ((string-equal op "hue") (hue args))
-              ((string-equal op "mask") (mask args))
-              ((string-equal op "despeckle") (despeckle args))
+              ((string-equal op "brightness") (brightness args))
               (t nil))
         nil)) 
   

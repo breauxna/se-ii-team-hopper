@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Kyle Morse
 ;@date: March 25, 2012
 ;@version: 1.0
@@ -15,50 +15,44 @@
 (module MRotate
   (import IImage) 
   
-  ;Recursive function to rotate image 90 degress.
-  (defun rotate90 (old new x y)
-    (if (< x (img-width old))
-        (rotate90 old 
-                  (add-pixel y 
-                             (- (- (img-width old) x) 1) 
-                             (get-color x y old) 
-                             new)  
-                  (+ 1 x) 
-                  y)
-        (if (< y (img-height old))
-            (rotate90 old 
-                      new  
-                      0 
-                      (+ 1 y))
-            (change-size (img-width old)
-                         (img-height old) 
-                         new)))) 
+  ;Recursive function to rotate image 270 degress.
+  (defun rotate270 (old new x y)
+    (if (< y (img-height old))
+        (if (< x (img-width old))
+            (rotate270 old 
+                      (add-pixel y 
+                                 (- (- (img-width old) x) 1) 
+                                 (get-color x y old) 
+                                 new)  
+                      (+ 1 x) 
+                      y)
+            (rotate270 old new 0 (+ 1 y)))
+        (change-size (img-height old)
+                     (img-width old) 
+                     new))) 
   
   ;Checks if image has proper height and width and then performs
-  ;a rotation of 90 degrees
-  (defun rotate90-check (img)
+  ;a rotation of 270 degrees
+  (defun rotate270-check (img)
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img))
              (< 0 (img-height img)))
-        (rotate90 img (empty-image (img-width img) (img-height img)) 0 0)
+        (rotate270 img (empty-image (img-width img) (img-height img)) 0 0)
         img))
   
   ;Recursive function to rotate image 180 degress.
   (defun rotate180 (old new x y)
-    (if (< x (img-width old))
-        (rotate180 old 
-                   (add-pixel (- (- (img-width old) x) 1)
-                              (- (- (img-height old) y) 1)
-                              (get-color x y old) 
-                              new)  
-                   (+ 1 x) 
-                   y)
-        (if (< y (img-height old))
+    (if (< y (img-height old))
+        (if (< x (img-width old))
             (rotate180 old 
-                       new  
-                       0 
-                       (+ 1 y))
-            new)))
+                       (add-pixel (- (- (img-width old) x) 1)
+                                  (- (- (img-height old) y) 1)
+                                  (get-color x y old) 
+                                  new)  
+                       (+ 1 x) 
+                       y)
+            (rotate180 old new 0 (+ 1 y)))
+        new))
   
   ;Checks if image has proper height and width and then performs
   ;a rotation of 180 degrees
@@ -69,32 +63,29 @@
         (rotate180 img (empty-image (img-width img) (img-height img)) 0 0)
         img))
   
-  ;Recursive function to rotate image 270 degress.
-  (defun rotate270 (old new x y)
-    (if (< x (img-width old))
-        (rotate270 old 
-                   (add-pixel (- (- (img-height old) y) 1) 
-                              x 
-                              (get-color x y old) 
-                              new)  
-                   (+ 1 x) 
-                   y)
-        (if (< y (img-height old))
-            (rotate270 old 
-                       new  
-                       0 
-                       (+ 1 y))
-            (change-size (img-width old) 
-                         (img-height old) 
-                         new))))
+  ;Recursive function to rotate image 90 degress.
+  (defun rotate90 (old new x y)
+    (if (< y (img-height old))
+        (if (< x (img-width old))
+            (rotate90 old 
+                       (add-pixel (- (- (img-height old) y) 1) 
+                                  x 
+                                  (get-color x y old) 
+                                  new)  
+                       (+ 1 x) 
+                       y)
+            (rotate90 old new 0 (+ 1 y)))
+        (change-size (img-height old) 
+                     (img-width old) 
+                     new)))
   
   ;Checks if image has proper height and width and then performs
-  ;a rotation of 270 degrees
-  (defun rotate270-check (img)
+  ;a rotation of 90 degrees
+  (defun rotate90-check (img)
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img)) 
              (< 0 (img-height img)))
-        (rotate270 img (empty-image (img-width img) (img-height img)) 0 0)
+        (rotate90 img (empty-image (img-width img) (img-height img)) 0 0)
         img))
   
   ;Wrapper function to rotate an image. It checks if degrees
