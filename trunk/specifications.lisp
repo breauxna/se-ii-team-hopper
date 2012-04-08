@@ -1,9 +1,9 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
-;@date Apr 7, 2012
+;@date Apr 8, 2012
 ;@version 1.0
 
 ;Specifications files
@@ -53,9 +53,6 @@
   ;returns the v value of the color
   (sig get-v (color))
   
-  ;returns the brightness of the color
-  (sig get-brightness (color))
-  
   ;checks to see whether or not the given list is a proper color structure
   (sig color? (color)))
 
@@ -79,11 +76,7 @@
   (sig sum (nums))
   
   ;returns the average of a list of numbers
-  (sig average (nums))
-  
-  ;returns the Euclidean distance between two points
-  ;using Taylor series
-  (sig distance (x1 y1 x2 y2)))
+  (sig average (nums)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;main function
@@ -104,9 +97,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Features
 
-;blur blurs a circle in the image centered at x y with a given radius
+;blur blurs the entire image
 (interface IBlur
-  (sig blur (img x y radius)))
+  (sig blur (img)))
 
 ;@param img bitmap image
 ;@param border-size size of the border in pixels
@@ -114,6 +107,9 @@
 ;Adds specified border size and color to image
 (interface IBorder
   (sig border (img border-size border-color)))
+
+(interface IBrightness
+  (sig brightness (img amount)))
 
 ;@param image bitmap image
 ;@param target-color the hue value of the color you wish to change
@@ -132,9 +128,6 @@
 ;Crop the image from (x1, y1) to (x2, y2)
 (interface ICrop
   (sig crop (img x1 y1 x2 y2)))
-
-(interface IBrightness
-  (sig brightness (img amount)))
 
 (interface IGreyscale
   (sig greyscale (img)))

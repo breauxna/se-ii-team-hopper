@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
-;@date Apr 7, 2012
+;@date Apr 8, 2012
 ;@version 1.0
 
 ;MColor module
@@ -15,9 +15,8 @@
 ;MColor is the underlying color data structure for image manipulation
 ;each color structure is '(r g b h s v)
 (module MColor
-  (import IMath)
-  
-  ;checks to see if a list of r, g, and b values falls within to proper ranges
+  ;checks to see if a list of r, g, and b values falls within
+  ;the proper ranges
   ;@param rgb - '(r g b)
   ;@return boolean - whether or not the given list is a proper rgb value
   (defun rgb? (rgb)
@@ -29,7 +28,8 @@
                      (rationalp b) (>= b 0) (<= b 1)))
         nil))
   
-  ;checks to see if a list of h, s, and v values falls within to proper ranges
+  ;checks to see if a list of h, s, and v values falls within
+  ;the proper ranges
   ;@param hsv - '(h s v)
   ;@return boolean - whether or not the given list is a proper hsv value
   (defun hsv? (hsv)
@@ -142,12 +142,6 @@
   ;@return v - v value
   (defun get-v (color)
     (nth 5 color))
-  
-  ;returns the brightness of the color
-  ;@param color - color value
-  ;@return brightness - brightness value
-  (defun get-brightness (color)
-    (average (get-rgb color)))
   
   ;checks to see whether or not the given list is a proper color structure
   ;@param color - color value

@@ -3,14 +3,16 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
-;@date Apr 7, 2012
+;@date Apr 8, 2012
 ;@version 1.0
 
 (require "specifications.lisp")
 
-;MHistorgram generates a CSV string with r, g, b, h, s, v, brightness frequencies for a given image
+;MHistorgram generates a CSV string with r, g, b, h, s, and v
+;frequencies for a given image
 (module MHistogram
   (include-book "io-utilities" :dir :teachpacks)
+  
   (import IImage)
   (import IColor)
   
@@ -18,17 +20,17 @@
   ;each sublist is a new line
   ;@return string-list - default formatted output text
   (defun initial-table ()
-    (list (list "range" "," "red" "," "blue" "," "green" "," "hue" "," "saturation" "," "value" "," "brightness")
-          (list "[0, 0.1)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.1, 0.2)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.2, 0.3)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.3, 0.4)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.4, 0.5)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.5, 0.6)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.6, 0.7)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.7, 0.8)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.8, 0.9)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")
-          (list "[0.9, 1.0]" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0")))
+    (list (list "range" "," "red" "," "blue" "," "green" "," "hue" "," "saturation" "," "value" "\r")
+          (list "[0 - 0.1)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.1 - 0.2)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.2 - 0.3)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.3 - 0.4)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.4 - 0.5)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.5 - 0.6)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.6 - 0.7)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.7 - 0.8)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.8 - 0.9)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
+          (list "[0.9 - 1.0]" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")))
   
   ;replace-nth replaces the nth element of a list with a given value
   ;@param n - location in list for replacement
@@ -48,14 +50,18 @@
   ;@param hist - CSV string for histogram output
   ;@return string - CSV string for histogram output
   (defun count-stats (n stats hist)
-    (if (< n (len stats))
+    (if (and (natp n) (< n (len stats)))
         (let* ((stat (nth n stats))
-               (interval (if (> (1- (floor stat 0.1)) 8)
-                             8
-                             (1- (floor stat 0.1))))
-               (row (nth (1+ interval) hist))
+               (interval (1+ (if (>= (floor stat 0.1) 9)
+                                 9
+                                 (floor stat 0.1))))
+               (row (nth interval hist))
                (frequency (str->int (nth (* 2 (1+ n)) row))))
-          (count-stats (1+ n) stats (replace-nth (1+ interval) (replace-nth (* 2 (1+ n)) (int->str (1+ frequency)) row) hist)))
+          (count-stats (1+ n)
+                       stats
+                       (replace-nth interval
+                                    (replace-nth (* 2 (1+ n)) (int->str (1+ frequency)) row)
+                                    hist)))
         hist))
   
   ;count iterates through all pixels in an image and updates the frequency CSV string
@@ -65,21 +71,21 @@
   ;@param hist - CSV string for histogram output
   ;@return string - CSV string for histogram output
   (defun count (x y img hist)
-    (if (< y (img-height img))
-        (if (< x (img-width img))
-            (let* ((color (get-color x y img)) ;'(r g b h s v)
-                   (stats (cons (get-brightness color) color))) ;'(brightness r g b h s v)
-              (count (1+ x) y img (count-stats 0 stats hist)))
-            (count 0 (1+ y) img hist))
-        hist))
+    (if (is-image-empty? img)
+        '("No image data.")
+        (if (and (natp x) (natp y) (< y (img-height img)))
+            (if (< x (img-width img))
+                (count (1+ x) y img (count-stats 0 (get-color x y img) hist))
+                (count 0 (1+ y) img hist))
+            hist)))
   
   ;string-list->string converts a list of strings to a string
   ;@param string-list - list of strings
   ;@return string
   (defun string-list->string (string-list)
     (if (consp string-list)
-        (append (car string-list) (string-list->string (cdr string-list)))
-        nil))
+        (string-append (car string-list) (string-list->string (cdr string-list)))
+        ""))
   
   ;format-output formats the frequency data for output
   ;@param output - list of lists of strings
@@ -89,11 +95,13 @@
         (cons (string-list->string (car output)) (format-output (cdr output)))
         nil))
   
-  ;generates a frequenct table for brightness, r, g, b, h, s, and v
+  ;generates a frequency table for brightness, r, g, b, h, s, and v
   ;values of a given image
   ;@param img - image
   ;retun string - formatted CSV string for histogram output
   (defun histogram (img)
-    (format-output (count 0 0 img (initial-table))))
+    (if (is-image-empty? img)
+        '("No image data.")
+        (format-output (count 0 0 img (initial-table)))))
   
   (export IHistogram))
