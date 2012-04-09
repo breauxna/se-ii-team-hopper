@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin, Michael Brandt
-;@date Apr 8, 2012
+;@date Apr 9, 2012
 ;@version 1.0
 
 (require "mmath.lisp")
@@ -105,7 +105,7 @@
   (export IMain))
 
 
-(link Run (MMath MColor MImage MOperation MRead-Operations
+(link Run (MMath MColor MImage MOperation MRead-Operations=
                  MInput MBlur MBorder MBrightness MColormod
                  MContrast MCrop MGreyscale MHistogram MHue
                  MMerge MMirror MNegative MOutput MResize

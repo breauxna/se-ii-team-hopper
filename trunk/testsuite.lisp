@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin, Kyle Morse
-;@date Apr 6, 2012
+;@date Apr 9, 2012
 ;@version 1.0
 
 (require "mblur.lisp")
@@ -28,22 +28,23 @@
 (require "msplitcolor.lisp")
 (require "mtestfunctions.lisp")
 
+(require "tblur.lisp")
 (require "tbrightness.lisp")
 (require "tcolor.lisp")
 (require "timage.lisp")
 (require "tmath.lisp")
+(require "tmerge.lisp")
 (require "tmirror.lisp")
 (require "tnegative.lisp")
 (require "toperation.lisp")
 (require "trotate.lisp")
 (require "tsplitcolor.lisp")
 
-(link TestSuite (MMath MColor MImage MTestFunctions; 
-                 MBrightness MMirror MNegative MOperation MRotate MSplitColor 
-                 ;MBlur 
-                 ;MBorder MBrightness MColormod MContrast MCrop 
-                 ;MGreyscale MHistogram MHue MMerge
-                 ;MNegative MResize MRotate MSaturation MSplitColor 
-                 ;Working TBrightness TColor TImage TMath TMirror TNegative TOperation TRotate TSplitColor  
+(link TestSuite (MMath MColor MImage MTestFunctions MBlur MBorder
+                       MBrightness MColormod MContrast MCrop
+                       MGreyscale MHistogram MHue MMerge MMirror
+                       MNegative MOperation MResize MRotate MSaturation
+                       MSplitColor
+                       TBrightness TBlur TColor TImage TMath TMerge TMirror TNegative TOperation TRotate TSplitColor  
                  ))
 (invoke TestSuite)
