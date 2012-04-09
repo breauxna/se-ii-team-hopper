@@ -10,7 +10,7 @@
 
 ;Testing Module for operations data structure
 (module TBrightness
-  (import IRotate)
+  (import IBrightness)
   (import IImage)
   (import IColor)
   (import ITestFunctions)
@@ -37,6 +37,5 @@
   (defproperty brightness-round-trip :repeat 100
     (width  :value (random-between 1 10)
      height :value (random-between 1 10)
-     b :value (random-rational) :limit 1
      img    :value (random-image width height))
-    (image-equal? img (brightness (brightness img (* b -1)) b))))
+    (image-equal? img (brightness img 0))))

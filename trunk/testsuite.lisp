@@ -6,20 +6,44 @@
 ;@date Apr 6, 2012
 ;@version 1.0
 
-(require "mmath.lisp")
-
-(require "moperation.lisp")
-(require "toperation.lisp")
-
+(require "mblur.lisp")
+(require "mborder.lisp")
+(require "mbrightness.lisp")
 (require "mcolor.lisp")
-(require "tcolor.lisp")
-
+(require "mcolormod.lisp")
+(require "mcontrast.lisp")
+(require "mcrop.lisp")
+(require "mgreyscale.lisp")
+(require "mhistogram.lisp")
+(require "mhue.lisp")
 (require "mimage.lisp")
-(require "minput.lisp")
-(require "tinput.lisp")
-
+(require "mmath.lisp")
+(require "mmerge.lisp")
+(require "mmirror.lisp")
 (require "mnegative.lisp")
-(require "tnegative.lisp")
+(require "moperation.lisp")
+(require "mresize.lisp")
+(require "mrotate.lisp")
+(require "msaturation.lisp")
+(require "msplitcolor.lisp")
+(require "mtestfunctions.lisp")
 
-(link TestSuite (MMath Moperation Toperation MColor TColor MImage MInput TInput MNegative TNegative))
+(require "tbrightness.lisp")
+(require "tcolor.lisp")
+(require "timage.lisp")
+(require "tmath.lisp")
+(require "tmirror.lisp")
+(require "tnegative.lisp")
+(require "toperation.lisp")
+(require "trotate.lisp")
+(require "tsplitcolor.lisp")
+
+(link TestSuite (MMath MColor MImage MTestFunctions; 
+                 MBrightness MMirror MNegative MOperation MRotate MSplitColor 
+                 ;MBlur 
+                 ;MBorder MBrightness MColormod MContrast MCrop 
+                 ;MGreyscale MHistogram MHue MMerge
+                 ;MNegative MResize MRotate MSaturation MSplitColor 
+                 ;Working TBrightness TColor TImage TMath TMirror TNegative TOperation TRotate TSplitColor  
+                 ))
 (invoke TestSuite)

@@ -37,12 +37,10 @@
   (defproperty double-split-goes-to-black :repeat 100
     (width  :value (random-between 1 10)
      height :value (random-between 1 10)
-     x :value (random-between 1 10)
-     y :value (random-between 1 10)
-     col1 :value (random-color)
-     col2 :where (not (equal col1 col2)) :value (random-color) 
+     x :value (random-between 0 (1- width))
+     y :value (random-between 0 (1- height))
      img  :value (random-image width height))
-    (equal (set-rgb '(0 0 0)) (get-color x y (splitcolor (splitcolor img col1) col2))))
+    (equal (set-rgb '(0 0 0)) (get-color x y (splitcolor (splitcolor img 'red) 'green))))
   
   
   ; Check expects, checking a certain pixel in a negative image for expected value.
