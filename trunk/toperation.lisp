@@ -86,8 +86,7 @@
   (check-expect (operation "border" '("1" "2")) nil)
   (check-expect (operation "borders" '("1")) nil)
   (defproperty border-type-check :repeat 100
-    (x1 :value (random-integer)
-        :where (posp x1)
+    (x1 :value (random-natural)
      c  :value (random-color))
     (equal (operation "border" (list (rat->str x1 0) 
                                      (rat->str (* (get-r c) 255) 0)
@@ -103,29 +102,42 @@
   (check-expect (operation "brightness" '("1" "2")) nil)
   (check-expect (operation "brightnesss" '("1")) nil)
   (defproperty brightness-type-check :repeat 100
-    (x1 :value (random-integer)
-        :where (posp x1))
+    (x1 :value (random-natural))
     (equal (operation "brightness" (list (rat->str x1 0))) 
            (list 'brightness (list x1))))
   
   ;Colormod Tests
-  (check-expect (operation "colormod" (list "1" "1" "1"))
+  (check-expect (operation "colormod" (list "1" "1" "1" "1" "1" "1" "1"))
                 (list 'colormod (list (set-rgb (list (/ 1 255) 
+                                                     (/ 1 255) 
+                                                     (/ 1 255)))
+                                      1
+                                      (set-rgb (list (/ 1 255) 
                                                      (/ 1 255) 
                                                      (/ 1 255))))))
   (check-expect (operation "colormod" nil) nil)
   (check-expect (operation "colormod" "1") nil)
-  (check-expect (operation "colormod" '("a" "1" "1")) nil)
-  (check-expect (operation "colormod" '("1" "a" "1")) nil)
-  (check-expect (operation "colormod" '("1" "1" "a")) nil)
+  (check-expect (operation "colormod" '("a" "1" "1" "1" "1" "1" "1")) nil)
+  (check-expect (operation "colormod" '("1" "a" "1" "1" "1" "1" "1")) nil)
+  (check-expect (operation "colormod" '("1" "1" "a" "1" "1" "1" "1")) nil)
+  (check-expect (operation "colormod" '("1" "1" "1" "a" "1" "1" "1")) nil)
+  (check-expect (operation "colormod" '("1" "1" "1" "1" "a" "1" "1")) nil)
+  (check-expect (operation "colormod" '("1" "1" "1" "1" "1" "a" "1")) nil)
+  (check-expect (operation "colormod" '("1" "1" "1" "1" "1" "1" "a")) nil)
   (check-expect (operation "colormod" '("1" "2")) nil)
   (check-expect (operation "colormod" '("1")) nil)
   (defproperty colormod-type-check :repeat 100
-    (c  :value (random-color))
+    (c   :value (random-color)
+     offset   :value (random-between 0 255)
+     c2  :value (random-color))
     (equal (operation "colormod" (list (rat->str (* (get-r c) 255) 0)
                                        (rat->str (* (get-g c) 255) 0)
-                                       (rat->str (* (get-b c) 255) 0))) 
-           (list 'colormod (list c))))
+                                       (rat->str (* (get-b c) 255) 0)
+                                       (rat->str offset 0)
+                                       (rat->str (* (get-r c2) 255) 0)
+                                       (rat->str (* (get-g c2) 255) 0)
+                                       (rat->str (* (get-b c2) 255) 0))) 
+           (list 'colormod (list c offset c2))))
   
   ;Contrast Tests
   (check-expect (operation "contrast" '("1")) '(contrast (1)))
@@ -135,8 +147,7 @@
   (check-expect (operation "contrast" '("1" "2")) nil)
   (check-expect (operation "contrasts" '("1")) nil)
   (defproperty contrast-type-check :repeat 100
-    (x1 :value (random-integer)
-        :where (posp x1))
+    (x1 :value (random-natural))
     (equal (operation "contrast" (list (rat->str x1 0))) 
            (list 'contrast (list x1))))
   
@@ -151,14 +162,10 @@
   (check-expect (operation "crop" '("1" "2" "3" "4" "5")) nil)
   (check-expect (operation "crops" '("1" "2" "3" "4")) nil)
   (defproperty crop-type-check :repeat 100
-    (x1 :value (random-integer)
-        :where (posp x1)
-        x2 :value (random-integer)
-        :where (posp x2)
-        x3 :value (random-integer)
-        :where (posp x3)
-        x4 :value (random-integer)
-        :where (posp x4))
+    (x1 :value (random-natural)
+     x2 :value (random-natural)
+     x3 :value (random-natural)
+     x4 :value (random-natural))
     (equal (operation "crop" (list (rat->str x1 0) 
                                    (rat->str x2 0) 
                                    (rat->str x3 0) 
@@ -192,8 +199,7 @@
   (check-expect (operation "hue" '("1" "2")) nil)
   (check-expect (operation "hues" '("1")) nil)
   (defproperty hue-type-check :repeat 100
-    (x1 :value (random-integer)
-        :where (posp x1))
+    (x1 :value (random-between -360 360))
     (equal (operation "hue" (list (rat->str x1 0))) 
            (list 'hue (list x1))))
   
@@ -242,8 +248,7 @@
   (check-expect (operation "resize" '("1" "2")) nil)
   (check-expect (operation "resizes" '("1")) nil)
   (defproperty resize-type-check :repeat 100
-    (x1 :value (random-integer)
-        :where (posp x1))
+    (x1 :value (random-natural))
     (equal (operation "resize" (list (rat->str x1 0))) 
            (list 'resize (list x1))))
   
@@ -255,8 +260,7 @@
   (check-expect (operation "rotate" '("1" "2")) nil)
   (check-expect (operation "rotates" '("1")) nil)
   (defproperty rotate-type-check :repeat 100
-    (x1 :value (random-integer)
-        :where (posp x1))
+    (x1 :value (random-natural))
     (equal (operation "rotate" (list (rat->str x1 0))) 
            (list 'rotate (list x1))))
   
@@ -268,8 +272,7 @@
   (check-expect (operation "saturation" '("1" "2")) nil)
   (check-expect (operation "saturations" '("1")) nil)
   (defproperty saturation-type-check :repeat 100
-    (x1 :value (random-integer)
-        :where (posp x1))
+    (x1 :value (random-natural))
     (equal (operation "saturation" (list (rat->str x1 0))) 
            (list 'saturation (list x1))))
   

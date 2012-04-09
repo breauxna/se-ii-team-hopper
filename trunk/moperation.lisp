@@ -69,6 +69,7 @@
   
   ;Checks if brightness has right arguments
   ;Format - (brightness percent)
+  ;Percent: natural that will be divided by 100
   (defun brightness (args)
     (if (and (consp args)
              (number? (car args))
@@ -78,6 +79,10 @@
   
   ;Checks if border has right arguments
   ;Format - (border width r g b)
+  ;width: natural
+  ;r: [0, 255]
+  ;g: [0, 255]
+  ;b: [0, 255]
   (defun border (args)
     (if (and (consp args)
              (number? (car args)) 
@@ -92,20 +97,33 @@
         nil))
   
   ;Checks if colormod has right arguments
-  ;Format - (colormod r g b)
+  ;Format - (colormod r g b offset r g b)
+  ;r: [0, 255]
+  ;g: [0, 255]
+  ;b: [0, 255]
+  ;offset: [0, 255]
   (defun colormod (args)
     (if (and (consp args)
              (number? (car args)) 
              (number? (cadr args)) 
              (number? (caddr args))
-             (equal (cdddr args) nil))
+             (number? (nth 3 args))
+             (number? (nth 4 args))
+             (number? (nth 5 args))
+             (number? (nth 6 args))
+             (equal (nthcdr 7 args) nil))
         (list 'colormod (list (set-rgb (list (/ (str->rat (car args)) 255)
                                              (/ (str->rat (cadr args)) 255)
-                                             (/ (str->rat (caddr args)) 255)))))
+                                             (/ (str->rat (caddr args)) 255)))
+                              (str->rat (car (nthcdr 3 args)))
+                              (set-rgb (list (/ (str->rat (nth 4 args)) 255)
+                                             (/ (str->rat (nth 5 args)) 255)
+                                             (/ (str->rat (nth 6 args)) 255)))))
         nil))
   
   ;Checks if contrast has right arguments
   ;Format - (contrast percent)
+  ;percent: natural that will be divided by 100
   (defun contrast (args)
     (if (and (consp args)
              (number? (car args))
@@ -115,6 +133,10 @@
   
   ;Checks if crop has right arguments
   ;Format - (crop x1 y1 x2 y2)
+  ;x1: natural
+  ;y1: natural
+  ;x2: natural
+  ;y2: natural
   (defun crop (args)
     (if (and (consp args)
              (number? (car args)) 
@@ -137,6 +159,7 @@
   
   ;Checks if histogram has right arguments
   ;Format - (histogram path)
+  ;Path: string
   (defun histogram (args)
     (if (and (consp args)
              (stringp (car args))
@@ -145,7 +168,8 @@
         nil))
   
   ;Checks if hue has right arguments
-  ;Format - (hue percent)
+  ;Format - (hue degree)
+  ;degree:  [-360, 360]
   (defun hue (args)
     (if (and (consp args)
              (number? (car args))
@@ -185,6 +209,7 @@
   
   ;Checks if resize has right arguments
   ;Format - (resize scale)
+  ;scale: natural that will be divided by 100
   (defun resize (args)
     (if (and (consp args)
              (number? (car args))
@@ -194,6 +219,7 @@
   
   ;Checks if rotate has right arguments
   ;Format - (rotate degrees)
+  ;degrees: natural
   (defun rotate (args)
     (if (and (consp args)
              (number? (car args))
@@ -204,6 +230,7 @@
   
   ;Checks if saturation has right arguments
   ;Format - (saturation percent)
+  ;percent: natural that will be divided by 100
   (defun saturation (args)
     (if (and (consp args)
              (number? (car args))
