@@ -2,92 +2,40 @@
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-;@author Nathan Breaux
-;@date Apr 6, 2012
+;@author Nathan Breaux, Youming Lin
+;@date Apr 8, 2012
 ;@version 1.0
 
 (require "specifications.lisp")
 
 (module MBorder
-  
   (import IImage)
   (import IColor)
   (import IMath)
   
-  ;Add the bottom horizontal border to the image
-  ;@param img1(x, y) border image
-  (defun build-bottom-border (img1 border-size border-color x y)
-    (if (< y (img-height img1))
-        (if (< x (img-width img1))
-            (build-bottom-border (add-pixel x y border-color img1) 
-                                 border-size border-color 
-                                 (+ x 1) y)
-            (build-bottom-border (add-pixel x y border-color img1) 
-                                 border-size border-color 
-                                 x (+ y 1))
-            )
-        img1
-        )
-    )
-            
-               
-  
-  ;Build the middle vertical borders
-  ;@param img1(x1, y1) original image
-  ;@param img2(x2, y2) border image
-  (defun build-middle-border (img1 img2 border-size border-color x1 y1 x2 y2)
-    (if (< y2 (+ border-size (img-height img1)))
-        (if (> (- x2 (img-width img2)) (+ border-size (img-width img1)))
-            
-            ;Left vertical border
-            (build-middle-border img1 (add-pixel x2 y2 border-color img2) 
-                                 border-size border-color x1 y1 (+ x2 1) y2)
-            
-            (if (< (- x2 (img-width img2)) (+ border-size (img-width img1)))
-                ;Right vertical border
-                (build-middle-border img1 (add-pixel x2 y2 border-color img2) 
-                                     border-size border-color x1 y1 (+ x2 1) y2)
-                ;Then in the picture, no border
-                (build-middle-border img1 (add-pixel x2 y2 (get-color x1 y1 img1) img2)
-                                     border-size border-color (+ x1 1) y1 (+ x2 1) y2)
-                )
-            
-            )
-        ;Bottom of the picture, add bottom border
-        (build-bottom-border img2 border-size border-color x2 y2)
-        )
-    )
-                
-  
-  ;Build the top horizontal border
-  ;@param img1 original image
-  ;@param img2(x2, y2) border image
-  (defun build-top-border (img1 img2 border-size border-color x y)
-    ;Add top border
-    (if (< y border-size)
+  (defun build-border (img1 img2 b border-color x y)
+    (if (and (natp x) (natp y) (posp b) (color? border-color) (< y (img-height img2)))
         (if (< x (img-width img2))
-            (build-top-border img1 (add-pixel x y border-color img2) 
-                          border-size border-color (+ x 1) y)
-            (build-top-border img1 (add-pixel x y border-color img2)
-                          border-size border-color 0 (+ y 1))
-            )
-        (build-middle-border img1 img2 border-size border-color x y 0 0)
-        )
-    )
-                          
+            (if (or (< x b) (>= x (- (img-width img2) b)) (< y b) (>= y (- (img-height img2) b)))
+                (build-border img1 (add-pixel x y border-color img2) b border-color (1+ x) y)
+                (build-border img1 (add-pixel x y (get-color (- x b) (- y b) img1) img2) b border-color (1+ x) y))
+            (build-border img1 img2 b border-color 0 (1+ y)))
+        img2))
   
   ;@param image original image
   ;@param border-size size of border
   ;@param border-color color data structure
   (defun border (image border-size border-color)
-    (if (OR (is-image-empty? image) (equal border-size 0))
-        image   
-        (build-top-border image (change-size 
-                             (+ (* border-size 2) (img-width image))
-                             (+ (* border-size 2) (img-width image))
-                             image) border-size border-color 0 0)
+    (if (or (is-image-empty? image) (not (posp border-size)) (not (color? border-color)))
+        image
+        (build-border image
+                      (empty-image (+ (* border-size 2) (img-width image))
+                                   (+ (* border-size 2) (img-height image))) 
+                      border-size
+                      border-color
+                      0
+                      0)
         )
     )
-  (export IBorder)
-  )
-        
+  
+  (export IBorder))
