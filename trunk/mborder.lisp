@@ -14,23 +14,42 @@
   (import IMath)
   
   (defun build-border (img1 img2 b border-color x y)
-    (if (and (natp x) (natp y) (posp b) (color? border-color) (< y (img-height img2)))
+    (if (< y (img-height img2))
         (if (< x (img-width img2))
-            (if (or (< x b) (>= x (- (img-width img2) b)) (< y b) (>= y (- (img-height img2) b)))
-                (build-border img1 (add-pixel x y border-color img2) b border-color (1+ x) y)
-                (build-border img1 (add-pixel x y (get-color (- x b) (- y b) img1) img2) b border-color (1+ x) y))
+            ;Check to see if (x, y) is in the border space
+            (if (OR (< x b) (>= x (- (img-width img2) b))
+                    (< y b) (>= y (- (img-height img2) b)))
+                
+                ;Add border at (x, y) to img2
+                (build-border img1 
+                              (add-pixel x y border-color img2) 
+                              b border-color (1+ x) y)
+                
+                ;Add pixel from img1 to img2 at (x, y)
+                (build-border img1 
+                              (add-pixel x y 
+                                         (get-color (- x b) (- y b) img1) 
+                                         img2) 
+                              b border-color (1+ x) y))
+            
+            ;Recurse with y incremented by 1
             (build-border img1 img2 b border-color 0 (1+ y)))
+        
+        ;End of image
         img2))
   
   ;@param image original image
   ;@param border-size size of border
   ;@param border-color color data structure
   (defun border (image border-size border-color)
-    (if (or (is-image-empty? image) (not (posp border-size)) (not (color? border-color)))
+    (if (OR (is-image-empty? image) 
+            (not (posp border-size)) 
+            (not (color? border-color)))
         image
         (build-border image
-                      (empty-image (+ (* border-size 2) (img-width image))
-                                   (+ (* border-size 2) (img-height image))) 
+                      (empty-image 
+                       (+ (* border-size 2) (img-width image))
+                       (+ (* border-size 2) (img-height image)))
                       border-size
                       border-color
                       0

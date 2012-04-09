@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Nathan Breaux
 ;@date: March 13, 2012
 ;@version: 1.0
@@ -14,25 +14,31 @@
   (import IColor)
   (import IMath)
   
-  ;Move along the x-axis until you reach x2 then move back to x1 with y1 increased by 1,
-  ;if reach (x2, y2) insert (x2, y2)
-  (defun build-crop-image (image x1 y1 x2 y2 x-count crop-image)
-                    (if (AND (> x-count x2) (equal y1 y2))
-                        (add-pixel x-count y1 (get-color x-count y1 image) crop-image)
-                        (if (> x-count x2)
-                            (build-crop-image image x1 (+ y1 1) x2 y2 x1 crop-image)
-                            (build-crop-image image x1 y1 x2 y2 (+ x-count 1)
-                                             (add-pixel x-count y1 (get-color x-count y1 image) crop-image))
-                            )
-                        )
-                    )
+  (defun build-crop-image (img1 img2 x y min-x min-y max-x max-y)
+    (if (AND (natp x) (natp y) (<= y max-y) (< y (img-height img1)))
+        (if (AND (<= x max-x) (< x (img-width img1)))
+            (build-crop-image img1
+                              (add-pixel (- x min-x) (- y min-y) 
+                                         (get-color x y img1) img2)
+                              (+ x 1)
+                              y
+                              min-x
+                              min-y
+                              max-x
+                              max-y)
+            (build-crop-image img1 img2 min-x (+ y 1)
+                              min-x min-y max-x max-y))
+        img2))
   
+  ;TODO check the lower bound to see if it is negative
   ;Check if image is empty and return image if it is else build the crop image
   (defun crop (image x1 y1 x2 y2)
-        (if (is-image-empty? image)
-            image
-            (build-crop-image image x1 y1 x2 y2 x1 (empty-image (img-width image) (img-height image)))
-            )
+    (if (OR (is-image-empty? image) (< (- x2 x1) 0) (< (- y2 y1) 0))
+        image
+        (build-crop-image image (empty-image (+ (- x2 x1) 1) 
+                                             (+ (- y2 y1) 1))
+                          x1 y1 x1 y1 x2 y2)
         )
+    )
   
   (export ICrop))
