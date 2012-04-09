@@ -2,19 +2,22 @@
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-;@author Youming Lin
-;@date Apr 8, 2012
-;@version 1.0
+;@author: Michael Brandt
+;@date: April 9, 2012
+;@version: 1.0
 
-(require "specifications.lisp")
+(require "mrotate.lisp")
 
-(module TImage
+;Testing Module for operations data structure
+(module TBrightness
+  (import IRotate)
+  (import IImage)
+  (import IColor)
+  (import ITestFunctions)
+  
   (include-book "testing" :dir :teachpacks)
   (include-book "doublecheck" :dir :teachpacks)
-  
-  (import IColor)
-  (import IImage)
-  (import ITestFunctions)
+  (include-book "io-utilities" :dir :teachpacks)
   
   (defrandom random-color ()
     (set-rgb (list (/ (mod (random-integer) 256) 255)
@@ -31,12 +34,9 @@
   (defrandom random-image (width height)
     (generate-random-image 0 0 (empty-image width height)))
   
-  (defproperty image-get-add-same-color :repeat 100
+  (defproperty brightness-round-trip :repeat 100
     (width  :value (random-between 1 10)
      height :value (random-between 1 10)
-     x      :value (mod (random-natural) width)
-     y      :value (mod (random-natural) height)
+     b :value (random-rational) :limit 1
      img    :value (random-image width height))
-    (image-equal? img (add-pixel x y (get-color x y img) img)))
-  
-  )
+    (image-equal? img (brightness (brightness img (* b -1)) b))))
