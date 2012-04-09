@@ -112,9 +112,10 @@
   (sig brightness (img amount)))
 
 ;@param image bitmap image
-;@param target-color an rgb color structure of the color to change
+;@param target-color the hue value of the color you wish to change
 ;@param radius creates a range around the target-color from (tc-r - tc+r)
-;@param update-color change all target-colors to this rgb color
+;@param update-color change all target-colors to this hue value between 0-1
+;val should be between 0-1 if 0 targets target color, if 1 targets all colors
 (interface IColormod
   (sig colormod (image target-color radius update-color)))
 
@@ -122,8 +123,8 @@
   (sig contrast (img scalar)))
 
 ;@param img bitmap image
-;@param (x1, y1) bottom-left data point
-;@param (x2, y2) top-right data point
+;@param (x1, y1) top-left data point
+;@param (x2, y2) bottom-right data point
 ;Crop the image from (x1, y1) to (x2, y2)
 (interface ICrop
   (sig crop (img x1 y1 x2 y2)))
@@ -167,3 +168,8 @@
 
 (interface ISplitcolor
   (sig splitcolor (img color)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Test Functions
+(interface ITestFunctions
+  (sig image-equal? (img1 img2)))
