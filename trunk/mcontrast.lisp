@@ -9,8 +9,8 @@
 (require "specifications.lisp")
 
 ; Module for adjusting the contrast of an image based on a scalar value
-; specifying a scalar value > 1 will increase contrast by making brighter pixels 
-; brighter and darker ones darker. A scalar < 1 will do the opposite
+; specifying a scalar value > 100% will increase contrast by making brighter pixels 
+; brighter and darker ones darker. A scalar < 100% will do the opposite
 (module MContrast
  
   (import IImage)
@@ -51,7 +51,8 @@
   ;@return img - an image with the applied contrast
   (defun contrast (img scalar)
     (let* ((h (img-height img))
-           (w (img-width img)))
-      (contrast-adjust img (empty-image w h) 0 0 scalar)))
+           (w (img-width img))
+           (scale (/ scalar 100)))
+      (contrast-adjust img (empty-image w h) 0 0 scale)))
   
   (export IContrast))
