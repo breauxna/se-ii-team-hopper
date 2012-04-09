@@ -44,7 +44,7 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img)) 
              (< 0 (img-height img)))
-        (edit-b img (empty-image (img-width img) (img-height img)) amount 0 0)
+        (edit-b img (empty-image (img-width img) (img-height img)) (/ amount 100) 0 0)
         img))
   
   (export IBrightness))
