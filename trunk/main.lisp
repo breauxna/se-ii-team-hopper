@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin, Michael Brandt
-;@date Apr 9, 2012
+;@date Apr 8, 2012
 ;@version 1.0
 
 (require "mmath.lisp")
@@ -34,25 +34,25 @@
   (include-book "io-utilities" :dir :teachpacks)
   (set-state-ok t)
   
-  (import IInput)
-  (import IHue)
   (import IBrightness)
+  (import IBorder)
+  (import IBlur)
+  (import IContrast)
+  (import ICrop)
+  (import IGreyscale)
+  (import IHistogram)
+  (import IHue)
+  (import IInput)
   (import IMirror)
+  (import IMerge)
   (import INegative)
-  (import IRotate)
-  (import ISplitcolor)
   (import IOperation)
   (import IOutput)
   (import IRead-Operations)
-  (import IContrast)
-  (import ISaturation)
-  (import IGreyscale)
   (import IResize)
-  (import IHistogram)
-  (import IBorder)
-  (import IMerge)
-  (import IBlur)
-  (import ICrop)
+  (import IRotate)
+  (import ISaturation)
+  (import ISplitcolor)
   
   (defun perform-op (operation img)
     (if (listp operation)
@@ -70,44 +70,48 @@
                 ((equal op 'negative)
                  (negative img))
                 ((equal op 'histogram) 
-                 (histogram img))
-                ((equal op 'rotate)
-                 (rotate img (first args)))
-                ((equal op 'resize) 
-                 (resize-scale img (first args)))
-                ((equal op 'greyscale)
-                 (greyscale img))
-                ((equal op 'saturation)
-                 (saturation img (first args)))
-                ((equal op 'contrast)
-                 (contrast img (first args)))
-                ((equal op 'splitcolor)
-                 (splitcolor img (first args)))
-                ((equal op 'mirror)
-                 (mirror img (first args)))
-                ((equal op 'hue)
-                 (hue img (first args)))
-                ((equal op 'brightness)
-                 (brightness img (first args)))
-                (t nil)))
-        nil))
+                 (let ((out 
+                        (string-list->file (first args)
+                                           (histogram img) 
+                                           state)))
+                   img))
+                 ((equal op 'rotate)
+                  (rotate img (first args)))
+                 ((equal op 'resize) 
+                  (resize-scale img (first args)))
+                 ((equal op 'greyscale)
+                  (greyscale img))
+                 ((equal op 'saturation)
+                  (saturation img (first args)))
+                 ((equal op 'contrast)
+                  (contrast img (first args)))
+                 ((equal op 'splitcolor)
+                  (splitcolor img (first args)))
+                 ((equal op 'mirror)
+                  (mirror img (first args)))
+                 ((equal op 'hue)
+                  (hue img (first args)))
+                 ((equal op 'brightness)
+                  (brightness img (first args)))
+                 (t nil)))
+          nil))
+    
+    (defun process-ops (ops img-in)
+      (if (endp ops)
+          img-in
+          (process-ops (cdr ops) (perform-op (car ops) img-in))))
+    
+    (defun main (ops-file bmp-input bmp-output)
+      (let ((ops (read-operations ops-file))
+            (img-in (read-bmp-file bmp-input)))
+        (write-bmp-file (process-ops ops img-in) bmp-output)))
+    
+    (export IMain))
   
-  (defun process-ops (ops img-in)
-    (if (endp ops)
-        img-in
-        (process-ops (cdr ops) (perform-op (car ops) img-in))))
   
-  (defun main (ops-file bmp-input bmp-output)
-    (let ((ops (read-operations ops-file))
-          (img-in (read-bmp-file bmp-input)))
-      (write-bmp-file (process-ops ops img-in) bmp-output)))
-  
-  (export IMain))
-
-
-(link Run (MMath MColor MImage MOperation MRead-Operations=
-                 MInput MBlur MBorder MBrightness MColormod
-                 MContrast MCrop MGreyscale MHistogram MHue
-                 MMerge MMirror MNegative MOutput MResize
-                 MRotate MSaturation MSplitcolor MMain))
-(invoke Run)
+  (link Run (MMath MColor MImage MOperation MRead-Operations
+                   MInput MBlur MBorder MBrightness MColormod
+                   MContrast MCrop MGreyscale MHistogram MHue
+                   MMerge MMirror MNegative MOutput MResize
+                   MRotate MSaturation MSplitcolor MMain))
+  (invoke Run)
