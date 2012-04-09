@@ -30,14 +30,20 @@
                               min-x min-y max-x max-y))
         img2))
   
-  ;TODO check the lower bound to see if it is negative
   ;Check if image is empty and return image if it is else build the crop image
   (defun crop (image x1 y1 x2 y2)
-    (if (OR (is-image-empty? image) (< (- x2 x1) 0) (< (- y2 y1) 0))
+    (if (OR (is-image-empty? image) (< (- x2 x1) 0) (< (- y2 y1) 0)
+            (>= y1 (img-height image)) (>= x1 (img-width image))
+            (NOT (natp x1)) (NOT (natp x2)) (NOT (natp y1)) (NOT (natp y2)))
         image
-        (build-crop-image image (empty-image (+ (- x2 x1) 1) 
-                                             (+ (- y2 y1) 1))
-                          x1 y1 x1 y1 x2 y2)
+        (if (OR (>= x2 (img-width image)) (>= y2 (img-height image)))
+            (build-crop-image image (empty-image (- (img-width image) x1)
+                                                 (- (img-height image) y1))
+                              x1 y1 x1 y1 x2 y2)
+            (build-crop-image image (empty-image (+ (- x2 x1) 1)
+                                                 (+ (- y2 y1) 1))
+                              x1 y1 x1 y1 x2 y2)
+            )
         )
     )
   
