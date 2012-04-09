@@ -16,7 +16,7 @@
   
   ;Add hue-val to h
   (defun add-hue-val (h hue-value)
-    (mod (+ h (mod (/ hue-value 100) 1)) 1))
+    (mod (+ h (mod (/ hue-value 360) 1)) 1))
   
   (defun build-hue (img1 img2 x y hue-value)
     

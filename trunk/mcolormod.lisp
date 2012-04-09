@@ -15,14 +15,14 @@
   (import IMath)
   
   ;Get range
-  (defun get-range (target-color radius)
-    (if (>= (+ target-color radius) 1)
-        (if (<= (- target-color radius) 0)
+  (defun get-range (target-color offset)
+    (if (>= (+ target-color offset) 1)
+        (if (<= (- target-color offset) 0)
             (list 0 1)
-            (list (- target-color radius) 1))
-        (if (<= (- target-color radius) 0)
-            (list 0 (+ target-color radius))
-            (list (- target-color radius) (+ target-color radius)))
+            (list (- target-color offset) 1))
+        (if (<= (- target-color offset) 0)
+            (list 0 (+ target-color offset))
+            (list (- target-color offset) (+ target-color offset)))
         )
     )
   
@@ -70,9 +70,9 @@
   
   ;@param image original image
   ;@param target-color rgb color structure
-  ;@param radius creates a range around the target-color from (tc-r - tc+r)
+  ;@param offset creates a range around the target-color from (tc-r - tc+r)
   ;@param update-color change all target-colors to this color
-  (defun colormod (image target-color radius update-color)
+  (defun colormod (image target-color offset update-color)
     ;Check if empty image or nil color
     (if (OR (is-image-empty? image) 
             (equal target-color nil) 
@@ -80,13 +80,14 @@
         image
         
         ;Get the range for r, g, b
-        (let* ((r-range (get-range (get-r target-color) radius))
-               (g-range (get-range (get-g target-color) radius))
-               (b-range (get-range (get-b target-color) radius)))
-          (build-color image 
+        (let* ((true-offset (mod (/ offset 255) 1))
+               (r-range (get-range (get-r target-color) true-offset))
+               (g-range (get-range (get-g target-color) true-offset))
+               (b-range (get-range (get-b target-color) true-offset)))
+          (build-color image
                        (empty-image (img-width image) (img-height image))
-                       0 
-                       0 
+                       0
+                       0
                        r-range
                        g-range
                        b-range

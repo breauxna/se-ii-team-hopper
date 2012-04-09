@@ -113,11 +113,11 @@
 
 ;@param image bitmap image
 ;@param target-color the hue value of the color you wish to change
-;@param radius creates a range around the target-color from (tc-r - tc+r)
+;@param offset creates a range around the target-color from (tc-r - tc+r)
 ;@param update-color change all target-colors to this hue value between 0-1
 ;val should be between 0-1 if 0 targets target color, if 1 targets all colors
 (interface IColormod
-  (sig colormod (image target-color radius update-color)))
+  (sig colormod (image target-color offset update-color)))
 
 (interface IContrast
   (sig contrast (img scalar)))
