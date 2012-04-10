@@ -1,8 +1,8 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
-;; Leave these lines unchanged so that DrScheme can properly load this file.
+;; Leave these lines unchanged so that DrScheme can properly load this file. 
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-;@author Youming Lin
+;@author Youming Lin, Michael Brandt
 ;@date Apr 8, 2012
 ;@version 1.0
 
@@ -143,6 +143,12 @@
 ;Adds specificed hue value each pixel in picture
 (interface IHue
   (sig hue (img hue-value)))
+
+;@param img1 bitmap to be masked
+;@param img2 bitmap mask
+;Multiplies values in img1 by values in img2 to mask img1
+(interface IMask
+  (sig mask (img1 img2)))
 
 ;merges two imgs in a given direction
 ;direction - up, down, left, or right

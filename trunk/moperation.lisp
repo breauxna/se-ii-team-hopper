@@ -1,8 +1,8 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
-;@author: Kyle Morse
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+;@author: Kyle Morse, Michael Brandt
 ;@date: Apr 8, 2012
 ;@version: 1.0
 
@@ -188,6 +188,15 @@
         (list 'merge (list (car args)
                            (direction (cadr args))))
         nil))
+
+  ;Checks if mask has the right arguments
+  ;Format - (mask path)
+  (defun mask (args)
+    (if (and (consp args)
+             (stringp (car args))
+             (equal (cdr args) nil))
+        (list 'mask (list (car args)))
+        nil))
   
   ;Checks if mirror has right arguments
   ;Format - (mirror axis)
@@ -262,6 +271,7 @@
               ((string-equal op "greyscale") (greyscale args))
               ((string-equal op "histogram") (histogram args))
               ((string-equal op "hue") (hue args))
+              ((string-equal op "mask") (mask args))
               ((string-equal op "merge") (merge args))
               ((string-equal op "mirror") (mirror args))
               ((string-equal op "negative") (negative args))

@@ -21,6 +21,7 @@
 (require "mgreyscale.lisp")
 (require "mhistogram.lisp")
 (require "mhue.lisp")
+(require "mmask.lisp")
 (require "mmerge.lisp")
 (require "mmirror.lisp")
 (require "mnegative.lisp")
@@ -44,6 +45,7 @@
   (import IHistogram)
   (import IHue)
   (import IInput)
+  (import IMask)
   (import IMirror)
   (import IMerge)
   (import INegative)
@@ -66,6 +68,8 @@
                  (colormod img (first args) (second args) (third args)))
                 ((equal op 'blur)
                  (blur img))
+                ((equal op 'mask)
+                 (mask img (read-bmp-file (first args))))
                 ((equal op 'merge)
                  (merge img (read-bmp-file (first args)) (second args)))
                 ((equal op 'border) 
@@ -115,6 +119,6 @@
   (link Run (MMath MColor MImage MOperation MRead-Operations
                    MInput MBlur MBorder MBrightness MColormod
                    MContrast MCrop MGreyscale MHistogram MHue
-                   MMerge MMirror MNegative MOutput MResize
+                   MMask MMerge MMirror MNegative MOutput MResize
                    MRotate MSaturation MSplitcolor MMain))
   (invoke Run)
