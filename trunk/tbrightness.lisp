@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Michael Brandt
 ;@date: April 9, 2012
 ;@version: 1.0
@@ -38,4 +38,14 @@
     (width  :value (random-between 1 10)
      height :value (random-between 1 10)
      img    :value (random-image width height))
-    (image-equal? img (brightness img 0))))
+    (image-equal? img (brightness img 100)))
+  
+  (defproperty brightness-same-size :repeat 100
+    (width  :value (random-between 1 10)
+     height :value (random-between 1 10)
+     b      :value (random-natural)
+     img    :value (random-image width height))
+    (let ((new-img (brightness img b)))
+      (and (equal height (img-height new-img))
+           (equal width (img-width new-img)))))
+  )

@@ -1,9 +1,9 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Kyle Morse
-;@date: March 31, 2012
+;@date: Apr 9, 2012
 ;@version: 1.0
 
 (require "specifications.lisp")
@@ -16,7 +16,6 @@
   (import IImage)
   (import IColor)
   
-  
   ;Recursive function that does the brightness operation
   (defun edit-b (old new amount x y)
     (if (< y (img-height old))
@@ -26,13 +25,13 @@
                                y
                                (set-hsv (list (get-h (get-color x y old))
                                               (get-s (get-color x y old))
-                                              (let ((v (+ (get-v (get-color x y old)) amount)))
+                                              (let ((v (* (get-v (get-color x y old)) amount)))
                                                 (cond ((< v 0) 0)
                                                       ((> v 1) 1)
                                                       (t v)))))
                                new)
                     amount
-                    (+ 1 x) 
+                    (+ 1 x)
                     y)
             (edit-b old new amount 0 (+ 1 y)))
         new))

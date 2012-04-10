@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Nathan Breaux
-;@date: Feb 20, 2012
+;@date: Apr 9, 2012
 ;@version: 1.0
 
 (require "specifications.lisp")
@@ -26,11 +26,11 @@
             )
     )
   
-  ;Remove spaces from list of characters
-  (defun packets-spaces (chrs)
+  ;Remove commas from list of characters
+  (defun packets-commas (chrs)
     (if (consp chrs)
         (cons (remove nil (packets-set '(#\,) (car chrs))) 
-              (packets-spaces (cdr chrs)))
+              (packets-commas (cdr chrs)))
         nil
         )
     )
@@ -64,6 +64,6 @@
   (defun read-operations (file)
     (read-operations-helper 
      (input-format 
-                   (packets-spaces (car (read-file file state))))))
+                   (packets-commas (car (read-file file state))))))
   
   (export IRead-Operations))
