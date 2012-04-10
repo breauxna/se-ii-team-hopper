@@ -80,7 +80,7 @@
         image
         
         ;Get the range for r, g, b
-        (let* ((true-offset (mod (/ offset 255) 1))
+        (let* ((true-offset (mod (/ offset 256) 1))
                (r-range (get-range (get-r target-color) true-offset))
                (g-range (get-range (get-g target-color) true-offset))
                (b-range (get-range (get-b target-color) true-offset)))

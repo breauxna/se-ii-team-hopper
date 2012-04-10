@@ -115,7 +115,7 @@
         (list 'colormod (list (set-rgb (list (/ (str->rat (car args)) 255)
                                              (/ (str->rat (cadr args)) 255)
                                              (/ (str->rat (caddr args)) 255)))
-                              (str->rat (car (nthcdr 3 args)))
+                              (str->rat (nth 3 args))
                               (set-rgb (list (/ (str->rat (nth 4 args)) 255)
                                              (/ (str->rat (nth 5 args)) 255)
                                              (/ (str->rat (nth 6 args)) 255)))))
