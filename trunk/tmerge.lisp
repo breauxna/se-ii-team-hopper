@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
 ;@date Apr 9, 2012
 ;@version 1.0
@@ -32,6 +32,7 @@
   (defrandom random-image (width height)
     (generate-random-image 0 0 (empty-image width height)))
   
+  ;merge tests
   (check-expect (merge nil nil 'up) nil)
   (check-expect (merge nil (empty-image 5 5) 'down) (empty-image 5 5))
   (check-expect (merge (empty-image 10 10) nil 'left) nil)
@@ -85,7 +86,7 @@
      img2   :value (random-image width height))
     (image-equal? (merge img1 img2 'up) (merge img2 img1 'down)))
   
-  (defproperty merge-left-down-round-trip :repeat 100
+  (defproperty merge-left-right-round-trip :repeat 100
     (width  :value (random-between 1 10)
      height :value (random-between 1 10)
      img1   :value (random-image width height)

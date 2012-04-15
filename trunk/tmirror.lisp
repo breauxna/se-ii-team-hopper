@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
 ;@date Apr 8, 2012
 ;@version 1.0
@@ -32,6 +32,7 @@
   (defrandom random-image (width height)
     (generate-random-image 0 0 (empty-image width height)))
   
+  ;mirror tests
   (check-expect (mirror nil 'x) nil)
   (check-expect (mirror nil 'y) nil)
   (check-expect (mirror (empty-image 10 10) 'x) (empty-image 10 10))

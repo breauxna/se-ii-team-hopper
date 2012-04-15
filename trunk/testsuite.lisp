@@ -1,9 +1,9 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin, Kyle Morse
-;@date Apr 9, 2012
+;@date Apr 15, 2012
 ;@version 1.0
 
 (require "mblur.lisp")
@@ -32,6 +32,7 @@
 (require "tblur.lisp")
 (require "tbrightness.lisp")
 (require "tcolor.lisp")
+(require "thistogram.lisp")
 (require "timage.lisp")
 (require "tmath.lisp")
 (require "tmask.lisp")
@@ -47,7 +48,8 @@
                        MGreyscale MHistogram MHue MMask MMerge MMirror
                        MNegative MOperation MResize MRotate MSaturation
                        MSplitColor
-                       TBrightness TBlur TColor TImage TMath TMask TMerge
-                       TMirror TNegative TOperation TRotate TSplitColor  
+                       TBrightness TBlur TColor THistogram TImage TMath
+                       TMask TMerge TMirror TNegative TOperation TRotate
+                       TSplitColor  
                  ))
 (invoke TestSuite)

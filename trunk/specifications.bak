@@ -1,9 +1,9 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
-;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
-;@author Youming Lin
-;@date Apr 7, 2012
+;; Leave these lines unchanged so that DrScheme can properly load this file. 
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+;@author Youming Lin, Michael Brandt
+;@date Apr 8, 2012
 ;@version 1.0
 
 ;Specifications files
@@ -12,8 +12,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;data structures
 
-;color data struture
-;format: '(r g b h s v)
+;MColor is the underlying color data structure for image manipulation
+;each color structure is '(r g b h s v)
 (interface IColor
   ;checks to see if a list of r, g, and b values falls within to proper ranges
   (sig rgb? (rgb))
@@ -53,12 +53,10 @@
   ;returns the v value of the color
   (sig get-v (color))
   
-  ;returns the brightness of the color
-  (sig get-brightness (color))
-  
   ;checks to see whether or not the given list is a proper color structure
   (sig color? (color)))
 
+;MImage is the underlying data structure for bitmap image manipulation
 (interface IImage
   (sig empty-image (width height))
   (sig add-pixel (x y color img))
@@ -72,38 +70,36 @@
   (sig operation (op args)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;helper modules
+;MMath provides some commonly used functions
 (interface IMath
   ;returns sum of a list of numbers
   (sig sum (nums))
   
   ;returns the average of a list of numbers
-  (sig average (nums))
-  
-  ;returns the Euclidean distance between two points
-  ;using Taylor series
-  (sig distance (x1 y1 x2 y2)))
+  (sig average (nums)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;main function
-(interface IWrapper)
+(interface IMain
+  (sig main (ops-file bmp-input bmp-output)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;I/O
 (interface IInput
-  (sig read-file (fname state)))
+  (sig read-bmp-file (path)))
 
 (interface IRead-Operations
-  ()
+  (sig read-operations (file)))
 
-(interface IOutput)
+(interface IOutput
+  (sig write-bmp-file (img path)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Features
 
-;blur blurs a circle in the image centered at x y with a given radius
+;blur blurs the entire image
 (interface IBlur
-  (sig blur (img x y radius)))
+  (sig blur (img)))
 
 ;@param img bitmap image
 ;@param border-size size of the border in pixels
@@ -112,13 +108,19 @@
 (interface IBorder
   (sig border (img border-size border-color)))
 
+(interface IBrightness
+  (sig brightness (img amount)))
+
 ;@param image bitmap image
 ;@param target-color the hue value of the color you wish to change
-;@param radius creates a range around the target-color from (tc-r - tc+r)
+;@param offset creates a range around the target-color from (tc-r - tc+r)
 ;@param update-color change all target-colors to this hue value between 0-1
 ;val should be between 0-1 if 0 targets target color, if 1 targets all colors
 (interface IColormod
-  (sig colormod (image target-color radius update-color)))
+  (sig colormod (image target-color offset update-color)))
+
+(interface IContrast
+  (sig contrast (img scalar)))
 
 ;@param img bitmap image
 ;@param (x1, y1) top-left data point
@@ -126,8 +128,6 @@
 ;Crop the image from (x1, y1) to (x2, y2)
 (interface ICrop
   (sig crop (img x1 y1 x2 y2)))
-
-(interface IDespeckle)
 
 (interface IGreyscale
   (sig greyscale (img)))
@@ -144,6 +144,11 @@
 (interface IHue
   (sig hue (img hue-value)))
 
+;@param img1 bitmap to be masked
+;@param img2 bitmap mask
+;Multiplies values in img1 by values in img2 to mask img1
+(interface IMask
+  (sig mask (img1 img2)))
 
 ;merges two imgs in a given direction
 ;direction - up, down, left, or right
@@ -155,14 +160,22 @@
 (interface IMirror
   (sig mirror (img axis)))
 
-(interface INegative)
+(interface INegative
+  (sig negative (img)))
 
 (interface IResize
   (sig resize-scale (img scale)))
 
-(interface IRotate)
+(interface IRotate
+  (sig rotate (img degrees)))
 
 (interface ISaturation
   (sig saturation (img scale)))
 
-(interface ISplitcolor)
+(interface ISplitcolor
+  (sig splitcolor (img color)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Test Functions
+(interface ITestFunctions
+  (sig image-equal? (img1 img2)))

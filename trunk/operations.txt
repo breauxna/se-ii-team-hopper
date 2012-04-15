@@ -1,1 +1,2 @@
-merge,E:/Cruzer USB/Spring 2012/CS 4273/Project Code/se-ii-team-hopper/img2.bmp,down
+mirror,x
+negative

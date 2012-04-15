@@ -14,9 +14,11 @@
   
   (import IMath)
   
+  ;sum tests
   (check-expect (sum nil) 0)
   (check-expect (sum '(1)) 1)
   
+  ;average tests
   (check-expect (average '(10)) 10)
   (check-expect (average '(1 2)) 3/2)
   
@@ -29,5 +31,4 @@
     (xs :value (random-list-of (random-rational))
         :where (consp xs))
     (equal (/ (sum xs) (len xs)) (average xs)))
-  
   )
