@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
 ;@date Apr 8, 2012
 ;@version 1.0
@@ -35,7 +35,7 @@
                        (dr (get-color (1+ x) (1- y) img1))
                        (left (get-color (1- x) y img1))
                        (right (get-color (1+ x) y img1))
-                       (avg-r (average (remove nil (list (get-r center) ;average r value
+                       (avg-r (average (remove nil (list (get-r center)
                                                          (get-r ul)
                                                          (get-r up)
                                                          (get-r ur)
@@ -44,7 +44,7 @@
                                                          (get-r dr)
                                                          (get-r left)
                                                          (get-r right)))))
-                       (avg-g (average (remove nil (list (get-g center) ;average g value
+                       (avg-g (average (remove nil (list (get-g center)
                                                          (get-g ul)
                                                          (get-g up)
                                                          (get-g ur)
@@ -53,7 +53,7 @@
                                                          (get-g dr)
                                                          (get-g left)
                                                          (get-g right)))))
-                       (avg-b (average (remove nil (list (get-b center) ;average b value
+                       (avg-b (average (remove nil (list (get-b center)
                                                          (get-b ul)
                                                          (get-b up)
                                                          (get-b ur)
@@ -62,7 +62,15 @@
                                                          (get-b dr)
                                                          (get-b left)
                                                          (get-b right))))))
-                  (blend-color img1 (add-pixel x y (set-rgb (list avg-r avg-g avg-b)) img2) (1+ x) y))
+                  (blend-color img1
+                               (add-pixel x
+                                          y
+                                          (set-rgb (list avg-r
+                                                         avg-g
+                                                         avg-b))
+                                          img2)
+                               (1+ x)
+                               y))
                 (blend-color img1 img2 0 (1+ y)))
             img2)))
   
@@ -72,6 +80,9 @@
   (defun blur (img)
     (if (is-image-empty? img)
         img
-        (blend-color img (empty-image (img-width img) (img-height img)) 0 0)))
+        (blend-color img
+                     (empty-image (img-width img) (img-height img))
+                     0
+                     0)))
   
   (export IBlur))

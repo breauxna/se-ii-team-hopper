@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
 ;@date Apr 8, 2012
 ;@version 1.0
@@ -25,7 +25,13 @@
             img1
             (if (and (natp x) (natp y) (< y (img-height img2)))
                 (if (< x (img-width img2))
-                    (merge-right (add-pixel (+ x (img-width img1)) y (get-color x y img2) img1) img2 (1+ x) y)
+                    (merge-right (add-pixel (+ x (img-width img1))
+                                            y
+                                            (get-color x y img2)
+                                            img1)
+                                 img2
+                                 (1+ x)
+                                 y)
                     (merge-right img1 img2 0 (1+ y)))
                 img1))))
   
@@ -42,7 +48,13 @@
             img1
             (if (and (natp x) (natp y) (< y (img-height img2)))
                 (if (< x (img-width img2))
-                    (merge-up (add-pixel x (+ y (img-height img1)) (get-color x y img2) img1) img2 (1+ x) y)
+                    (merge-up (add-pixel x
+                                         (+ y (img-height img1))
+                                         (get-color x y img2)
+                                         img1)
+                              img2
+                              (1+ x)
+                              y)
                     (merge-up img1 img2 0 (1+ y)))
                 img1))))
   

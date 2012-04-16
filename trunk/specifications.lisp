@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin, Michael Brandt
 ;@date Apr 8, 2012
 ;@version 1.0
@@ -15,10 +15,12 @@
 ;MColor is the underlying color data structure for image manipulation
 ;each color structure is '(r g b h s v)
 (interface IColor
-  ;checks to see if a list of r, g, and b values falls within to proper ranges
+  ;checks to see if a list of r, g, and b values falls within to proper
+  ;ranges
   (sig rgb? (rgb))
   
-  ;checks to see if a list of h, s, and v values falls within to proper ranges
+  ;checks to see if a list of h, s, and v values falls within to proper
+  ;ranges
   (sig hsv? (hsv))
   
   ;generates a color data structure given a list of r, g, and b values
@@ -115,7 +117,8 @@
 ;@param target-color the hue value of the color you wish to change
 ;@param offset creates a range around the target-color from (tc-r - tc+r)
 ;@param update-color change all target-colors to this hue value between 0-1
-;val should be between 0-1 if 0 targets target color, if 1 targets all colors
+;val should be between 0-1 if 0 targets target color, if 1 targets all
+;colors
 (interface IColormod
   (sig colormod (image target-color offset update-color)))
 

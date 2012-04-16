@@ -1,14 +1,14 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
 ;@date Apr 8, 2012
 ;@version 1.0
 
 ;MColor module
 ;RGB->HSV and HSV->RGB conversion algorithms are from
-;http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+;http://tinyurl.com/22o56pv
 
 (require "specifications.lisp")
 
@@ -59,12 +59,15 @@
                        (h ( / (if (equal maximum minimum)
                                   0 ;achromatic
                                   (cond
-                                    ((equal maximum r) (+ (/ (- g b) delta)
-                                                          (if (< g b)
-                                                              6
-                                                              0)))
-                                    ((equal maximum g) (+ (/ (- b r) delta) 2))
-                                    ((equal maximum b) (+ (/ (- r g) delta) 4))))
+                                    ((equal maximum r)
+                                     (+ (/ (- g b) delta)
+                                        (if (< g b)
+                                            6
+                                            0)))
+                                    ((equal maximum g)
+                                     (+ (/ (- b r) delta) 2))
+                                    ((equal maximum b)
+                                     (+ (/ (- r g) delta) 4))))
                               6)))
                   (list r g b h s v)))
         nil))
@@ -124,7 +127,7 @@
   ;@return b - b value
   (defun get-b (color)
     (nth 2 color))
- 
+  
   ;returns the h value of the color
   ;@param color - color value
   ;@return h - h value
@@ -150,7 +153,9 @@
     (if (equal (len color) 6)
         (mv-let (r g b h s v)
                 color
-                (and (rgb? (list r g b)) (hsv? (list h s v)) (equal (set-rgb (list r g b)) color)))
+                (and (rgb? (list r g b))
+                     (hsv? (list h s v))
+                     (equal (set-rgb (list r g b)) color)))
         nil))
   
   (export IColor))

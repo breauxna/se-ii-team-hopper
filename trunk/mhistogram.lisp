@@ -1,7 +1,7 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Youming Lin
 ;@date Apr 8, 2012
 ;@version 1.0
@@ -20,17 +20,28 @@
   ;each sublist is a new line
   ;@return string-list - default formatted output text
   (defun initial-table ()
-    (list (list "range" "," "red" "," "blue" "," "green" "," "hue" "," "saturation" "," "value" "\r")
-          (list "[0 - 0.1)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.1 - 0.2)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.2 - 0.3)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.3 - 0.4)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.4 - 0.5)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.5 - 0.6)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.6 - 0.7)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.7 - 0.8)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.8 - 0.9)" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")
-          (list "[0.9 - 1.0]" "," "0" "," "0" "," "0" "," "0" "," "0" "," "0" "\r")))
+    (list (list "range" "," "red" "," "blue" "," "green" ",""hue" ","
+                "saturation" "," "value" "\r")
+          (list "[0 - 0.1)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.1 - 0.2)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.2 - 0.3)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.3 - 0.4)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.4 - 0.5)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.5 - 0.6)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.6 - 0.7)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.7 - 0.8)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.8 - 0.9)" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")
+          (list "[0.9 - 1.0]" "," "0" "," "0" "," "0" "," "0" "," "0" ","
+                "0" "\r")))
   
   ;replace-nth replaces the nth element of a list with a given value
   ;@param n - location in list for replacement
@@ -44,7 +55,8 @@
             (cons (car xs) (replace-nth (1- n) x (cdr xs))))
         xs))
   
-  ;count-stats iterates through a list of stats and updates the frequency CSV string
+  ;count-stats iterates through a list of stats and updates the frequency
+  ;CSV string
   ;@param n - index
   ;@param stats - list of statistics, i.e., '(brightness r g b h s v)
   ;@param hist - CSV string for histogram output
@@ -60,11 +72,14 @@
           (count-stats (1+ n)
                        stats
                        (replace-nth interval
-                                    (replace-nth (* 2 (1+ n)) (int->str (1+ frequency)) row)
+                                    (replace-nth (* 2 (1+ n))
+                                                 (int->str (1+ frequency))
+                                                 row)
                                     hist)))
         hist))
   
-  ;count iterates through all pixels in an image and updates the frequency CSV string
+  ;count iterates through all pixels in an image and updates the frequency
+  ;CSV string
   ;@param x - current x location
   ;@param y - current y location
   ;@param img - image
@@ -75,7 +90,10 @@
         '("No image data.")
         (if (and (natp x) (natp y) (< y (img-height img)))
             (if (< x (img-width img))
-                (count (1+ x) y img (count-stats 0 (get-color x y img) hist))
+                (count (1+ x)
+                       y
+                       img
+                       (count-stats 0 (get-color x y img) hist))
                 (count 0 (1+ y) img hist))
             hist)))
   
@@ -84,7 +102,8 @@
   ;@return string
   (defun string-list->string (string-list)
     (if (consp string-list)
-        (string-append (car string-list) (string-list->string (cdr string-list)))
+        (string-append (car string-list)
+                       (string-list->string (cdr string-list)))
         ""))
   
   ;format-output formats the frequency data for output
@@ -92,7 +111,8 @@
   ;@return list - list of strings collapsed from output
   (defun format-output (output)
     (if (consp output)
-        (cons (string-list->string (car output)) (format-output (cdr output)))
+        (cons (string-list->string (car output))
+              (format-output (cdr output)))
         nil))
   
   ;generates a frequency table for brightness, r, g, b, h, s, and v
