@@ -8,13 +8,15 @@
 
 (require "specifications.lisp")
 
-; Module that applies a greyscale to an img that results in a new "black-and-white" image
+; Module that applies a greyscale to an img that results in a new 
+; grey, black, and white image
 (module MGreyscale
   
   (import IImage)
   (import IColor)
   
-  ;applies the greyscale to every pixel of the original image and returns a new image
+  ;applies the greyscale to every pixel of the original image and 
+  ;returns a new image
   ;@param img1 - original image
   ;@param img2 - new image with applied greyscaling
   ;@param x - row value
@@ -42,6 +44,8 @@
   (defun greyscale (img)
     (let* ((h (img-height img))
            (w (img-width img)))
-    (greyscale-xy img (empty-image (img-width img) (img-height img)) 0 0 h w)))
+      (if (equal img nil)
+          nil
+    (greyscale-xy img (empty-image (img-width img) (img-height img)) 0 0 h w))))
   
   (export IGreyscale))

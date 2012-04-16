@@ -9,21 +9,10 @@
 (require "specifications.lisp")
 
 ; Module for resizing an image based on a scale given as a %.
-(module MResize  
-  
+(module MResize    
   (import IImage)
   
   ; uses nearest-neighbor pixel resixe algorithm to shrink the image based on a scale
-  ;@param scale - the value to shrink the original image as a %
-  ;@param x - row value
-  ;@param y - col value
-  ;@param img1 - original image
-  ;@param img2 - new image after resizing
-  ;@param w2 - width of new image
-  ;@param h2 - height of new image
-  ;@param hratio - the ratio of heights between the new and old images
-  ;@param wratio - the ratio of widths between the new and old images
-  ;@return img2 - new resized image
   (defun shrink-xy (scale x y img1 img2 w2 h2 hratio wratio)
     (if (< y h2)
         (if (< x w2)
@@ -32,37 +21,21 @@
               (shrink-xy scale (+ x 1) y img1 
                           (add-pixel x y (get-color px py img1) img2) 
                           w2 h2 hratio wratio))
-        (shrink-xy scale 0 (+ 1 y) img1 img2 w2 h2 hratio wratio))
-    
+        (shrink-xy scale 0 (+ 1 y) img1 img2 w2 h2 hratio wratio))    
     img2))
   
   ; finds the old width and height, calculates the new h&w, finds a height ratio and width ratio, and
   ; passes data to shrink-xy function
-  ;@param scale - the value to shrink the original image as a %
-  ;@param img1 - original image
-  ;@param img2 - new image after resizing
-  ;@return img2 - new resized image
   (defun shrink-scale (scale img1 img2)
     (let* ((w1 (img-width img1))
            (w2 (round (* w1 (/ scale 100)) 1))
            (h1 (img-height img1))
            (h2 (round (* h1 (/ scale 100)) 1))
            (hratio (/ h1 h2))
-           (wratio (/ w1 w2)))
-      
+           (wratio (/ w1 w2)))      
       (shrink-xy scale 0 0 img1 (change-size w2 h2 img2) w2 h2 hratio wratio)))
   
   ; uses nearest neighbor pixel resize to enlarge given image 
-  ;@param scale - the value to enlarge the original image as a %
-  ;@param x - row value
-  ;@param y - col value
-  ;@param img1 - original image
-  ;@param img2 - new image after resizing
-  ;@param w2 - width of new image
-  ;@param h2 - height of new image
-  ;@param hratio - the ratio of heights between the new and old images
-  ;@param wratio - the ratio of widths between the new and old images
-  ;@return img2 - new resized image
   (defun enlarge-xy (scale x y img1 img2 w2 h2 hratio wratio) 
     (if (< y h2)
         (if (< x w2)
@@ -71,24 +44,18 @@
               (enlarge-xy scale (+ x 1) y img1 
                           (add-pixel x y (get-color px py img1) img2) 
                           w2 h2 hratio wratio))
-        (enlarge-xy scale 0 (+ 1 y) img1 img2 w2 h2 hratio wratio))
-    
+        (enlarge-xy scale 0 (+ 1 y) img1 img2 w2 h2 hratio wratio))    
     img2))
   
   ; finds the old width and height, calculates the new h&w, finds a height ratio and width ratio, and
   ; passes data to enlarge-xy function
-  ;@param scale - the value to enlarge the original image as a %
-  ;@param img1 - original image
-  ;@param img2 - new image after resizing
-  ;@return img2 - new resized image
   (defun enlarge-scale (scale img1 img2)
     (let* ((w1 (img-width img1))
            (w2 (round (* w1 (/ scale 100)) 1))
            (h1 (img-height img1))
            (h2 (round (* h1 (/ scale 100)) 1))
            (hratio (/ h1 h2))
-           (wratio (/ w1 w2)))
-      
+           (wratio (/ w1 w2)))      
       (enlarge-xy scale 0 0 img1 (change-size w2 h2 img2) w2 h2 hratio wratio)))
   
   ; calls the enlarge function if scale is > 100%, calls shrink if scale is <100%, 
@@ -103,8 +70,7 @@
           ((< 100 scale)
            (enlarge-scale scale img (empty-image (img-width img) (img-height img))))
           ((> 100 scale)
-           (shrink-scale scale img (empty-image (img-width img) (img-height img)))))
-    
+           (shrink-scale scale img (empty-image (img-width img) (img-height img)))))    
     img))
   
   (export IResize))

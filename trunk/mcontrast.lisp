@@ -25,13 +25,14 @@
       ((< num 0) 0)
       (t num)))
   
-  ;recursively adjusts the contrast of each pixel by applying the contrast to the r, g, and b vals independently
-  ;and returns a new image with the applied contrast
+  ;recursively adjusts the contrast of each pixel by applying the contrast to 
+  ;the r, g, and b vals independently and returns a new image with the 
+  ;applied contrast
   ;@param img1 - original image
   ;@param img2 - new image
   ;@param x - row value
   ;@param y - col value
-  ;@param contrast - that determines the application of contrast
+  ;@param contrast - value that determines the application of contrast
   ;@return img2 - an image with the applied contrast
   (defun contrast-adjust (img1 img2 x y contrast)
     (if (< y (img-height img1))
@@ -47,12 +48,14 @@
   
   ;gets the height and width of the image to pass to the contrast-adjust function
   ;@param img - original image
-  ;@param scalar - value of the contrast
+  ;@param scalar - value of the contrast in +%
   ;@return img - an image with the applied contrast
   (defun contrast (img scalar)
     (let* ((h (img-height img))
            (w (img-width img))
            (scale (/ scalar 100)))
-      (contrast-adjust img (empty-image w h) 0 0 scale)))
+      (if (equal img nil)
+          nil
+      (contrast-adjust img (empty-image w h) 0 0 scale))))
   
   (export IContrast))

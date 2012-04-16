@@ -8,7 +8,8 @@
 
 (require "specifications.lisp")
 
-; Module for increasing or decreasing pixel color saturation based on a scale %
+; Module for increasing or decreasing pixel color saturation 
+; based on a scale +%
 (module MSaturation
   
   (import IImage)
@@ -46,6 +47,8 @@
   (defun saturation (img scale)
     (let* ((h (img-height img))
            (w (img-width img)))
-    (apply-sat-xy img (empty-image w h) scale 0 0)))
+      (if (equal img nil)
+          nil
+    (apply-sat-xy img (empty-image w h) scale 0 0))))
   
   (export ISaturation))
