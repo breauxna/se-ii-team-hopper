@@ -17,22 +17,19 @@
   
   ;This is the recursive function for getting a negative image. 
   (defun get-negative (old new x y)
-    (if (< x (img-width old))
-        (get-negative old 
-                      (add-pixel x
-                                 y
-                                 (set-rgb (list (- 1 (get-r (get-color x y old)))
-                                                (- 1 (get-g (get-color x y old)))
-                                                (- 1 (get-b (get-color x y old)))))
-                                 new)  
-                      (+ 1 x) 
-                      y)
-        (if (< y (img-height old))
+    (if (< y (img-height old))
+        (if (< x (img-width old))
             (get-negative old 
-                          new 
-                          0 
-                          (+ 1 y))
-            new)))
+                          (add-pixel x
+                                     y
+                                     (set-rgb (list (- 1 (get-r (get-color x y old)))
+                                                    (- 1 (get-g (get-color x y old)))
+                                                    (- 1 (get-b (get-color x y old)))))
+                                     new)  
+                          (+ 1 x) 
+                          y)
+            (get-negative old new 0 (+ 1 y)))
+        new))
   
   ;This is the wrapper function for negative.
   ;Takes in an image and makes sure the width and height
@@ -42,7 +39,7 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img))
              (< 0 (img-height img)))
-        (get-negative img (empty-image (img-header img)) 0 0)
+        (get-negative img (empty-image (img-width img) (img-height img)) 0 0)
         img))
   
   (export INegative))

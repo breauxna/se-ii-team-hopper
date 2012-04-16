@@ -1,9 +1,9 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
-;@author Kyle Morse and Youming Lin
-;@date Apr 7, 2012
+#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+;@author Kyle Morse
+;@date Apr 16, 2012
 ;@version 1.0
 
 (require "specifications.lisp")
@@ -27,7 +27,9 @@
   ;1 word is 4 bytes
   (defun word->num (word index sum)
     (if (consp word)
-        (word->num (cdr word) (+ index 1) (+ sum (* (expt 256 index) (car word))))
+        (word->num (cdr word) 
+                   (+ index 1) 
+                   (+ sum (* (expt 256 index) (car word))))
         sum))
   
   ;Starts at bottom left and moves up
@@ -39,8 +41,20 @@
                         (break-at-nth 3 pixels)
                         (mv-let (b g r)
                                 front
-                                (make-image back (add-pixel x y (set-rgb (list (/ r 255) (/ g 255) (/ b 255))) img) junk_width (1+ x) y)))
-                (make-image (nthcdr junk_width pixels) img junk_width 0 (1+ y)))
+                                (make-image back 
+                                            (add-pixel x 
+                                                       y 
+                                                       (set-rgb 
+                                                        (list (/ r 255)
+                                                              (/ g 255)
+                                                              (/ b 255)))
+                                                       img) 
+                                            junk_width (1+ x) y)))
+                (make-image (nthcdr junk_width pixels) 
+                            img 
+                            junk_width 
+                            0 
+                            (1+ y)))
             img)
         img))
   
@@ -61,9 +75,11 @@
            (hdr (car file))
            (width (word->num (subseq hdr 18 22) 0 0))
            (height (word->num (subseq hdr 22 26) 0 0))
-           (img (make-image (cadr file) (empty-image width height) (junk-width width) 0 0)))
+           (img (make-image (cadr file) 
+                            (empty-image width height) 
+                            (junk-width width) 
+                            0 
+                            0)))
       img))
   
   (export IInput))
-
-

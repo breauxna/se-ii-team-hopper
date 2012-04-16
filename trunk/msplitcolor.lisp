@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Kyle Morse
-;@date: March 27, 2012
+;@date: April 16, 2012
 ;@version: 1.0
 
 (require "specifications.lisp")
@@ -23,7 +23,10 @@
             (get-red-tree img 
                           (add-pixel x
                                      y
-                                     (set-rgb (list (get-r (get-color x y img)) 
+                                     (set-rgb (list (get-r 
+                                                     (get-color x 
+                                                                y 
+                                                                img)) 
                                                     0 
                                                     0))
                                      red)  
@@ -41,7 +44,10 @@
                             (add-pixel x
                                        y
                                        (set-rgb (list 0 
-                                                      (get-g (get-color x y img)) 
+                                                      (get-g 
+                                                       (get-color x 
+                                                                  y 
+                                                                  img))
                                                       0))
                                        green)  
                             (+ 1 x) 
@@ -59,7 +65,10 @@
                                       y
                                       (set-rgb (list 0
                                                      0 
-                                                     (get-b (get-color x y img))))
+                                                     (get-b 
+                                                      (get-color x 
+                                                                 y 
+                                                                 img))))
                                       blue)  
                            (+ 1 x) 
                            y)
@@ -73,9 +82,15 @@
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img)) 
              (< 0 (img-height img)))
-        (cond ((equal color 'red) (get-red-tree img (empty-image (img-width img) (img-height img)) 0 0)) 
-              ((equal color 'green) (get-green-tree img (empty-image (img-width img) (img-height img)) 0 0)) 
-              ((equal color 'blue) (get-blue-tree img (empty-image (img-width img) (img-height img)) 0 0)))
+        (cond ((equal color 'red) 
+               (get-red-tree img (empty-image (img-width img) 
+                                          (img-height img)) 0 0)) 
+              ((equal color 'green) 
+               (get-green-tree img (empty-image (img-width img) 
+                                                (img-height img)) 0 0)) 
+              ((equal color 'blue) 
+               (get-blue-tree img (empty-image (img-width img) 
+                                               (img-height img)) 0 0)))
         img))
   
   (export ISplitcolor))

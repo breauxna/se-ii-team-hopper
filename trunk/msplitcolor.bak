@@ -18,73 +18,79 @@
   ;Takes an image and extracts the red value and zeroes out
   ;other values recursively.
   (defun get-red-tree (img red x y)
-    (if (< x (img-width img))
-        (get-red-tree img 
-                      (add-pixel x
-                                 y
-                                 (set-rgb (list (get-r (get-color x y img)) 
-                                                0 
-                                                0))
-                                 red)  
-                      (+ 1 x) 
-                      y)
-        (if (< y (img-height img))
+    (if (< y (img-height img))
+        (if (< x (img-width img))
             (get-red-tree img 
-                          red  
-                          0 
-                          (+ 1 y))
-            red)))
+                          (add-pixel x
+                                     y
+                                     (set-rgb (list (get-r 
+                                                     (get-color x 
+                                                                y 
+                                                                img)) 
+                                                    0 
+                                                    0))
+                                     red)  
+                          (+ 1 x) 
+                          y)
+            (get-red-tree img red 0 (+ 1 y)))
+        red))
   
   ;Takes an image and extracts the green value and zeroes out
   ;other values recursively.
   (defun get-green-tree (img green x y)
-    (if (< x (img-width img))
-        (get-green-tree img 
-                        (add-pixel x
-                                   y
-                                   (set-rgb (list 0 
-                                                  (get-g (get-color x y img)) 
-                                                  0))
-                                   green)  
-                        (+ 1 x) 
-                        y)
-        (if (< y (img-height img))
+    (if (< y (img-height img))
+        (if (< x (img-width img))
             (get-green-tree img 
-                            green 
-                            0 
-                            (+ 1 y))
-            green)))
+                            (add-pixel x
+                                       y
+                                       (set-rgb (list 0 
+                                                      (get-g 
+                                                       (get-color x 
+                                                                  y 
+                                                                  img))
+                                                      0))
+                                       green)  
+                            (+ 1 x) 
+                            y)
+            (get-green-tree img green 0 (+ 1 y)))
+        green))
   
   ;Takes an image and extracts the blue value and zeroes out
   ;other values recursively.
   (defun get-blue-tree (img blue x y)
-    (if (< x (img-width img))
-        (get-blue-tree img 
-                       (add-pixel x
-                                  y
-                                  (set-rgb (list 0
-                                                 0 
-                                                 (get-b (get-color x y img))))
-                                  blue)  
-                       (+ 1 x) 
-                       y)
-        (if (< y (img-height img))
+    (if (< y (img-height img))
+        (if (< x (img-width img))
             (get-blue-tree img 
-                           blue  
-                           0 
-                           (+ 1 y))
-            blue)))
+                           (add-pixel x
+                                      y
+                                      (set-rgb (list 0
+                                                     0 
+                                                     (get-b 
+                                                      (get-color x 
+                                                                 y 
+                                                                 img))))
+                                      blue)  
+                           (+ 1 x) 
+                           y)
+            (get-blue-tree img blue 0 (+ 1 y)))
+        blue))
   
   ;Wrapper function that takes in an image and returns
   ;a list of three images with a red image, green image,
   ;and blue image.
-  (defun splitcolor (img)
+  (defun splitcolor (img color)
     (if (and (not (is-image-empty? img))
              (< 0 (img-width img)) 
              (< 0 (img-height img)))
-        (list (get-red-tree img (empty-image (img-header img)) 0 0) 
-              (get-green-tree img (empty-image (img-header img)) 0 0) 
-              (get-blue-tree img (empty-image (img-header img)) 0 0))
+        (cond ((equal color 'red) 
+               (get-red-tree img (empty-image (img-width img) 
+                                          (img-height img)) 0 0)) 
+              ((equal color 'green) 
+               (get-green-tree img (empty-image (img-width img) 
+                                                (img-height img)) 0 0)) 
+              ((equal color 'blue) 
+               (get-blue-tree img (empty-image (img-width img) 
+                                               (img-height img)) 0 0)))
         img))
   
   (export ISplitcolor))

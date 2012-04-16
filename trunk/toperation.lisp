@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author: Kyle Morse
-;@date: March 4, 2012
+;@date: April 16, 2012
 ;@version: 1.0
 
 (require "moperation.lisp")
@@ -204,10 +204,14 @@
            (list 'hue (list x1))))
   
   ;Merge Tests
-  (check-expect (operation "merge" '("a" "up")) (list 'merge (list "a" 'up)))
-  (check-expect (operation "merge" '("a" "down")) (list 'merge (list "a" 'down)))
-  (check-expect (operation "merge" '("a" "left")) (list 'merge (list "a" 'left)))
-  (check-expect (operation "merge" '("a" "right")) (list 'merge (list "a" 'right)))
+  (check-expect (operation "merge" '("a" "up")) 
+                (list 'merge (list "a" 'up)))
+  (check-expect (operation "merge" '("a" "down")) 
+                (list 'merge (list "a" 'down)))
+  (check-expect (operation "merge" '("a" "left")) 
+                (list 'merge (list "a" 'left)))
+  (check-expect (operation "merge" '("a" "right")) 
+                (list 'merge (list "a" 'right)))
   (check-expect (operation "merge" nil) nil)
   (check-expect (operation "merge" "a") nil)
   (check-expect (operation "merge" '("a" "b")) nil)
@@ -277,9 +281,12 @@
            (list 'saturation (list x1))))
   
   ;Splitcolor Tests
-  (check-expect (operation "splitcolor" '("red")) (list 'splitcolor (list 'red)))
-  (check-expect (operation "splitcolor" '("green")) (list 'splitcolor (list 'green)))
-  (check-expect (operation "splitcolor" '("blue")) (list 'splitcolor (list 'blue)))
+  (check-expect (operation "splitcolor" '("red")) 
+                (list 'splitcolor (list 'red)))
+  (check-expect (operation "splitcolor" '("green")) 
+                (list 'splitcolor (list 'green)))
+  (check-expect (operation "splitcolor" '("blue")) 
+                (list 'splitcolor (list 'blue)))
   (check-expect (operation "splitcolor" '("a")) nil)
   (check-expect (operation "splitcolor" nil) nil)
   (check-expect (operation "splitcolor" "a") nil)

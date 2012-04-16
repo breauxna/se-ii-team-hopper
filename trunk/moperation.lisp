@@ -2,8 +2,8 @@
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-;@author: Kyle Morse, Michael Brandt
-;@date: Apr 8, 2012
+;@author: Kyle Morse
+;@date: Apr 16, 2012
 ;@version: 1.0
 
 (require "specifications.lisp")
@@ -90,10 +90,14 @@
              (number? (caddr args)) 
              (number? (cadddr args))
              (equal (cddddr args) nil))
-        (list 'border (list (str->rat (car args))
-                            (set-rgb (list (/ (str->rat (cadr args)) 255)
-                                           (/ (str->rat (caddr args)) 255)
-                                           (/ (str->rat (cadddr args)) 255)))))
+        (list 'border 
+              (list (str->rat (car args))
+                            (set-rgb (list (/ (str->rat (cadr args)) 
+                                              255)
+                                           (/ (str->rat (caddr args)) 
+                                              255)
+                                           (/ (str->rat (cadddr args)) 
+                                              255)))))
         nil))
   
   ;Checks if colormod has right arguments
@@ -112,13 +116,19 @@
              (number? (nth 5 args))
              (number? (nth 6 args))
              (equal (nthcdr 7 args) nil))
-        (list 'colormod (list (set-rgb (list (/ (str->rat (car args)) 255)
-                                             (/ (str->rat (cadr args)) 255)
-                                             (/ (str->rat (caddr args)) 255)))
+        (list 'colormod (list (set-rgb (list (/ (str->rat (car args)) 
+                                                255)
+                                             (/ (str->rat (cadr args)) 
+                                                255)
+                                             (/ (str->rat (caddr args)) 
+                                                255)))
                               (str->rat (nth 3 args))
-                              (set-rgb (list (/ (str->rat (nth 4 args)) 255)
-                                             (/ (str->rat (nth 5 args)) 255)
-                                             (/ (str->rat (nth 6 args)) 255)))))
+                              (set-rgb (list (/ (str->rat (nth 4 args)) 
+                                                255)
+                                             (/ (str->rat (nth 5 args)) 
+                                                255)
+                                             (/ (str->rat (nth 6 args)) 
+                                                255)))))
         nil))
   
   ;Checks if contrast has right arguments
