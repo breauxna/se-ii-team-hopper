@@ -45,5 +45,5 @@
     (width  :value (random-between 1 10)
      height :value (random-between 1 10)
      img    :value (random-image width height))
-    (image-equal? img (contrast (contrast img 200) 50))))
+    (image-equal? img (contrast (contrast img 100) 100))))
   

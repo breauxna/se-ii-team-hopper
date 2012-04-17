@@ -41,9 +41,11 @@
   (defrandom random-image (width height)
     (generate-random-image 0 0 (empty-image width height)))
   
-  (defproperty saturation-round-trip :repeat 100
+  (defproperty saturation-same-size :repeat 100
     (width  :value (random-between 1 10)
      height :value (random-between 1 10)
+     b      :value (random-natural)
      img    :value (random-image width height))
-    (image-equal? img (saturation (saturation img 200) 50))))
-  
+    (let ((new-img (saturation img b)))
+      (and (equal height (img-height new-img))
+           (equal width (img-width new-img))))))
