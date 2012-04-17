@@ -15,13 +15,16 @@
   (import IColor)
   
   ;set-rgb tests
-  (check-expect (set-rgb nil) nil)
+  (check-expect (set-rgb nil)nil)
   (check-expect (set-rgb '(-19 0 0)) nil)
   (check-expect (set-rgb '(0 0 0)) '(0 0 0 0 0 0))
-  (check-expect (set-rgb '(30/255 30/255 30/255)) '(30/255 30/255 30/255 0 0 2/17))
-  (check-expect (set-rgb '(30/255 60/255 90/255)) '(30/255 60/255 90/255 7/12 2/3 6/17))
+  (check-expect (set-rgb '(30/255 30/255 30/255))
+                '(30/255 30/255 30/255 0 0 2/17))
+  (check-expect (set-rgb '(30/255 60/255 90/255))
+                '(30/255 60/255 90/255 7/12 2/3 6/17))
   (check-expect (set-rgb '(0 0 255/255)) '(0 0 255/255 2/3 1 1))
-  (check-expect (set-rgb '(255/255 0 255/255)) '(255/255 0 255/255 5/6 1 1))
+  (check-expect (set-rgb '(255/255 0 255/255))
+                '(255/255 0 255/255 5/6 1 1))
   (check-expect (set-rgb '(255/255 0 0)) '(255/255 0 0 0 1 1))
   
   ;set-hsv tests
@@ -36,13 +39,16 @@
   
   ;get-rgb tests
   (check-expect (get-rgb '(0 0 0 0 0 0)) '(0 0 0))
-  (check-expect (get-rgb '(30/255 30/255 30/255 0 0 2/17)) '(30/255 30/255 30/255))
-  (check-expect (get-rgb '(30/255 60/255 90/255 7/12 2/3 6/17)) '(30/255 60/255 90/255))
+  (check-expect (get-rgb '(30/255 30/255 30/255 0 0 2/17))
+                '(30/255 30/255 30/255))
+  (check-expect (get-rgb '(30/255 60/255 90/255 7/12 2/3 6/17))
+                '(30/255 60/255 90/255))
   
   ;get-hsv tests
   (check-expect (get-hsv '(0 0 0 0 0 0)) '(0 0 0))
   (check-expect (get-hsv '(30/255 30/255 30/255 0 0 2/17)) '(0 0 2/17))
-  (check-expect (get-hsv '(30/255 60/255 90/255 7/12 2/3 6/17)) '(7/12 2/3 6/17))
+  (check-expect (get-hsv '(30/255 60/255 90/255 7/12 2/3 6/17))
+                '(7/12 2/3 6/17))
   
   ;get-r tests
   (check-expect (get-r '(0 0 0 0 0 0)) 0)
@@ -89,5 +95,6 @@
        :where (and (>= g 0) (<= g 1))
      b :value (random-rational)
        :where (and (>= b 0) (<= b 1)))
-    (equal (list r g b) (get-rgb (set-hsv (get-hsv (set-rgb (list r g b)))))))
+    (equal (list r g b)
+           (get-rgb (set-hsv (get-hsv (set-rgb (list r g b)))))))
   )

@@ -25,7 +25,9 @@
   (defrandom generate-random-image (x y img)
     (if (and (natp x) (natp y) (< y (img-height img)))
         (if (< x (img-width img))
-            (generate-random-image (1+ x) y (add-pixel x y (random-color) img))
+            (generate-random-image (1+ x)
+                                   y
+                                   (add-pixel x y (random-color) img))
             (generate-random-image 0 (1+ y) img))
         img))
   
@@ -36,8 +38,15 @@
   (check-expect (merge nil nil 'up) nil)
   (check-expect (merge nil (empty-image 5 5) 'down) (empty-image 5 5))
   (check-expect (merge (empty-image 10 10) nil 'left) nil)
-  (check-expect (merge (empty-image 10 10) (add-pixel 0 0 (empty-image 10 5) (set-rgb '(0 0 0))) 'right) (add-pixel 0 0 (empty-image 10 5) (set-rgb '(0 0 0))))
-  (check-expect (merge (empty-image 10 10) (empty-image 5 10) 'up) (empty-image 5 10))
+  (check-expect (merge (empty-image 10 10)
+                       (add-pixel 0
+                                  0
+                                  (empty-image 10 5)
+                                  (set-rgb '(0 0 0)))
+                       'right)
+                (add-pixel 0 0 (empty-image 10 5) (set-rgb '(0 0 0))))
+  (check-expect (merge (empty-image 10 10) (empty-image 5 10) 'up)
+                (empty-image 5 10))
   
   (defproperty merge-up-correct-size :repeat 100
     (width   :value (random-between 1 10)

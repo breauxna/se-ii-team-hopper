@@ -26,7 +26,9 @@
   (defrandom generate-random-image (x y img)
     (if (and (natp x) (natp y) (< y (img-height img)))
         (if (< x (img-width img))
-            (generate-random-image (1+ x) y (add-pixel x y (random-color) img))
+            (generate-random-image (1+ x)
+                                   y
+                                   (add-pixel x y (random-color) img))
             (generate-random-image 0 (1+ y) img))
         img))
   
@@ -34,11 +36,17 @@
     (generate-random-image 0 0 (empty-image width height)))
   
   (defun nth-number (string n)
-    (str->int (chrs->str (nth n (remove nil (packets-set '(#\, #\newline #\return #\tab) (str->chrs string)))))))
+    (str->int
+     (chrs->str
+      (nth n
+           (remove nil
+                   (packets-set '(#\, #\newline #\return #\tab)
+                                (str->chrs string)))))))
   
   (defun column-sum (string-list n)
     (if (consp string-list)
-        {+ (nth-number (car string-list) n) (column-sum (cdr string-list) n)}
+        {+ (nth-number (car string-list) n)
+           (column-sum (cdr string-list) n)}
         0))
   
   ;histogram tests
@@ -47,8 +55,8 @@
   
   (defproperty correct-sum :repeat 100
     (width  :value (random-between 1 10)
-     height :value (random-between 1 10)
-     img    :value (random-image width height))
+            height :value (random-between 1 10)
+            img    :value (random-image width height))
     (let* ((size (* width height))
            (string-list (cdr (histogram img))))
       (and (equal size (column-sum string-list 1))
@@ -57,4 +65,4 @@
            (equal size (column-sum string-list 4))
            (equal size (column-sum string-list 5))
            (equal size (column-sum string-list 6)))))
-    )
+  )

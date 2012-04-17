@@ -25,7 +25,9 @@
   (defrandom generate-random-image (x y img)
     (if (and (natp x) (natp y) (< y (img-height img)))
         (if (< x (img-width img))
-            (generate-random-image (1+ x) y (add-pixel x y (random-color) img))
+            (generate-random-image (1+ x)
+                                   y
+                                   (add-pixel x y (random-color) img))
             (generate-random-image 0 (1+ y) img))
         img))
   
