@@ -34,7 +34,9 @@
 (require "tbrightness.lisp")
 (require "tcolor.lisp")
 (require "tcolormod.lisp")
+(require "tcontrast.lisp")
 (require "tcrop.lisp")
+(require "tgreyscale.lisp")
 (require "thistogram.lisp")
 (require "thue.lisp")
 (require "timage.lisp")
@@ -44,7 +46,9 @@
 (require "tmirror.lisp")
 (require "tnegative.lisp")
 (require "toperation.lisp")
+(require "tresize.lisp")
 (require "trotate.lisp")
+(require "tsaturation.lisp")
 (require "tsplitcolor.lisp")
 
 (link TestSuite (MMath MColor MImage MTestFunctions MBlur MBorder
@@ -52,8 +56,10 @@
                        MGreyscale MHistogram MHue MMask MMerge MMirror
                        MNegative MOperation MResize MRotate MSaturation
                        MSplitColor
-                       TBrightness TBlur TColor THistogram THue TImage TMath
-                       TMask TMerge TMirror TNegative TOperation TRotate
-                       TSplitColor THue TColormod TBorder
+                       ;Tests
+                       TBlur TBorder TBrightness TColor TColormod TContrast
+                       TCrop TGreyscale THistogram THue TImage TMath
+                       TMask TMerge TMirror TNegative TOperation TResize 
+                       TRotate TSaturation TSplitColor
                  ))
 (invoke TestSuite)
