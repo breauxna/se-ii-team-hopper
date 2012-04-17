@@ -1,0 +1,2 @@
+mirror,x
+negative
