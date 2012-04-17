@@ -2,8 +2,7 @@
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-
-;@author Youming Lin, Kyle Morse
+;@author Youming Lin, Kyle Morse, Nathan Breaux, Michael Brandt, Toby Kraft
 ;@date Apr 15, 2012
 ;@version 1.0
 
@@ -31,9 +30,13 @@
 (require "mtestfunctions.lisp")
 
 (require "tblur.lisp")
+(require "tborder.lisp")
 (require "tbrightness.lisp")
 (require "tcolor.lisp")
+(require "tcolormod.lisp")
+(require "tcrop.lisp")
 (require "thistogram.lisp")
+(require "thue.lisp")
 (require "timage.lisp")
 (require "tmath.lisp")
 (require "tmask.lisp")
@@ -43,18 +46,14 @@
 (require "toperation.lisp")
 (require "trotate.lisp")
 (require "tsplitcolor.lisp")
-(require "tresize.lisp")
-(require "tcontrast.lisp")
-(require "tsaturation.lisp")
-(require "tgreyscale.lisp")
 
 (link TestSuite (MMath MColor MImage MTestFunctions MBlur MBorder
                        MBrightness MColormod MContrast MCrop
                        MGreyscale MHistogram MHue MMask MMerge MMirror
                        MNegative MOperation MResize MRotate MSaturation
                        MSplitColor
-                       TBrightness TBlur TColor THistogram TImage TMath
+                       TBrightness TBlur TColor THistogram THue TImage TMath
                        TMask TMerge TMirror TNegative TOperation TRotate
-                       TSplitColor TResize TContrast TSaturation TGreyscale
+                       TSplitColor THue TColormod TBorder
                  ))
 (invoke TestSuite)

@@ -2,7 +2,7 @@
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-;@author Youming Lin, Michael Brandt
+;@author Youming Lin, Michael Brandt, Nathan Breaux, Kyle Morse, Toby Kraft
 ;@date Apr 8, 2012
 ;@version 1.0
 
@@ -181,4 +181,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;Test Functions
 (interface ITestFunctions
-  (sig image-equal? (img1 img2)))
+  (sig image-equal? (img1 img2))
+  (sig color-in-image? (img1 color)))

@@ -35,7 +35,8 @@
                    (v (get-v color))
                    (hsv (list (add-hue-val h hue-value) s v)))
               
-              (build-hue img1 (add-pixel x y (set-hsv hsv) img2) (+ x 1) y hue-value))
+              (build-hue img1 (add-pixel x y (set-hsv hsv) img2) 
+                         (+ x 1) y hue-value))
             
             (build-hue img1 img2 0 (+ y 1) hue-value)
             )
@@ -45,10 +46,12 @@
   
   ;@param image original image
   ;@param hue-value hue value specified by the user
+  ;Add hue-value to every pixel in the image
   (defun hue (image hue-value)
     (if (OR (is-image-empty? image) (equal hue-value 0))
         image
-        (build-hue image (empty-image (img-width image) (img-height image)) 0 0 hue-value))
+        (build-hue image (empty-image (img-width image) (img-height image))
+                   0 0 hue-value))
     )
   (export IHue)
   )

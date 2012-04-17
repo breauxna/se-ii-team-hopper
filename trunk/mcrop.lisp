@@ -14,6 +14,7 @@
   (import IColor)
   (import IMath)
   
+  ;Do some type checks and crop the image
   (defun build-crop-image (img1 img2 x y min-x min-y max-x max-y)
     (if (AND (natp x) (natp y) (<= y max-y) (< y (img-height img1)))
         (if (AND (<= x max-x) (< x (img-width img1)))
@@ -30,12 +31,18 @@
                               min-x min-y max-x max-y))
         img2))
   
-  ;Check if image is empty and return image if it is else build the crop image
+  ;Check if image is empty and return image 
+  ;if it is else build the crop image
   (defun crop (image x1 y1 x2 y2)
+    ;Checks if p2 < p1, p1 or p2 are negative and checks if p1 goes outside
+    ;the image width or height
     (if (OR (is-image-empty? image) (< (- x2 x1) 0) (< (- y2 y1) 0)
             (>= y1 (img-height image)) (>= x1 (img-width image))
-            (NOT (natp x1)) (NOT (natp x2)) (NOT (natp y1)) (NOT (natp y2)))
+            (NOT (natp x1)) (NOT (natp x2)) 
+            (NOT (natp y1)) (NOT (natp y2)))
         image
+        ;If p2 is within image width and height make new image dimensions
+        ;(x2-x1, y2-y1), else (x1-imgwidth, y1-imgheight)
         (if (OR (>= x2 (img-width image)) (>= y2 (img-height image)))
             (build-crop-image image (empty-image (- (img-width image) x1)
                                                  (- (img-height image) y1))

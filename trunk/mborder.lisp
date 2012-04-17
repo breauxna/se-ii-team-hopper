@@ -41,6 +41,7 @@
   ;@param image original image
   ;@param border-size size of border
   ;@param border-color color data structure
+  ;Add border with specified size and color to image
   (defun border (image border-size border-color)
     (if (OR (is-image-empty? image) 
             (not (posp border-size)) 
