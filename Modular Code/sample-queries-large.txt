@@ -1,0 +1,11 @@
+SELECT team,date,points,assists,rebounds
+WHERE (team = "OKC") || (team = "LAL")
+
+SELECT team,date,points,assists,rebounds
+WHERE date = 20120321
+
+SELECT team,date,points,assists,rebound
+WHERE points > 140
+
+SELECT team,date,points,assists
+WHERE (points > 100) && (assists < 20)
