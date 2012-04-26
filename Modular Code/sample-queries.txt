@@ -1,0 +1,2 @@
+SELECT team,date,points
+WHERE date = 20120101
