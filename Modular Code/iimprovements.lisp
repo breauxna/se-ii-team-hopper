@@ -3,5 +3,5 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 (interface IImprovements
-  (sig is-string (token))
-  (sig is-numeric (str)))
+  (sig new-is-string (token))
+  (sig new-is-numeric (str)))
