@@ -1,0 +1,42 @@
+1. what is booleanify?
+2. add checks to first-n
+	a. natp n
+	b. null xs
+3. chunk-by
+	a. (chunk-by 'foo '(foo 1 2 foo 3 4)) -> '(nil (foo 1 2) (foo 3 4)), not '((foo 1 2) (foo 3 4))
+4. remove-nils
+	a. duplicating existing functionaly, i.e., (remove nil xs)
+5. strs->chrss
+	a. check for string-listp
+6. chrss->strs
+	a. check for character-listp for each sublist
+7. what is alphanump?
+	answer: checks to see if a character is a-z, A-Z, or 0-9
+8. make-string
+	a. add default case, output ""
+9. what is has-prefix?
+	example: (has-prefix '(1 . (2 . 3)) '(1 2)) -> t
+
+
+Field - attribute, i.e. team, points, etc.
+
+
+Error checkings:
+1. tkns->row
+	a. make sure string is a number before conversion
+2. tokenize-chrs
+	a. simplify to (remove nil (packets-set '(#\space #\return #\newline #\,) chrs))
+3. chunk-by
+	a. need to cdr result
+4. str->queries
+	a. change remove-nils to cdr
+5. remove rows-query-strs->query-result-str and str->query; unused
+6. change first-n to (car (break-at-nth n xs))
+7. remove commas when packet-setting in tokenize-chrs instead of in parse-fields
+8. remove str->expression functions; unused
+9. is-literal
+	a. make sure entire token is number instead of just the first char
+10. is-string
+	a. make sure the string is surrounded in quotes on both ends 
+11. queries->query-results-str
+	a. add #\return to end of each line
