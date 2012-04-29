@@ -1,24 +1,11 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-(require "IExecute.lisp")
-(require "MExecute.lisp")
-(require "IStructures.lisp")
-(require "MStructures.lisp")
-(require "IString-Utilities.lisp")
-(require "MString-Utilities.lisp")
-(require "IParse-Data.lisp")
-(require "MParse-Data.lisp")
-(require "IParse-Queries.lisp")
-(require "MParse-Queries.lisp")
-(require "IList-Utilities.lisp")
-(require "MList-Utilities.lisp")
-(require "IError.lisp")
-(require "MError.lisp")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+(require "specifications.lisp")
 
 (module TExecute
-  
+  (import IError)
   (import IExecute)
   (import IParse-Data)
   (import IParse-Queries)
@@ -26,6 +13,21 @@
   
   (include-book "testing" :dir :teachpacks)
   (include-book "doublecheck" :dir :teachpacks)
+  
+  ;Converts a string to a query
+  (defun str->query (str)
+    (let ((tkns (tokenize str)))
+      (if (error-p tkns)
+          tkns
+          (parse-query-tkns tkns))))
+  
+  ; Parses a string into a predicate expression
+  (defun str->expression (str)
+    (tokens->expression (tokenize str)))
+  
+  (defun rows-query-strs->query-result-str (data-str query-str)
+    (query-result->str (rows-query->query-result (str->rows data-str)
+                                                 (str->query query-str))))
   
   (defconst *sample-row*
     '(("team" . "BOS")
@@ -35,12 +37,14 @@
   
   (defconst *testrows* 
     (str->rows "team,date,points,assists,mascot
+string,number,number,number,string
 BOS,20120101,85,20,celtie
 BOS,20120102,93,23,celtie
 CHI,20120102,76,14,bullwinkle"))
   
   (defconst *testqueryresult* 
-    (query-result '("team" "date" "points" "assists" "mascot")
+    (query-result '("team" "date" "poi
+nts" "assists" "mascot")
                   '(("BOS" 20120101 85 20 "celtie") ("BOS" 20120102 93 23 "celtie"))))
   
   (defconst *testquery* (str->query "SELECT team,date WHERE team = \"BOS\""))
@@ -63,7 +67,7 @@ CHI,20120102,76,14,bullwinkle"))
                 t)
   
   (check-expect (row->csv-str '("dog" "cat" "bird"))
-                "dog,cat,bird")  
+                "dog,cat,bird")
   
   (check-expect (rows->csv-strs '(("dog" "cat") ("frog" "rat")))
                 "dog,cat
@@ -94,6 +98,7 @@ frog,rat")
   
   (check-expect (rows-query-strs->query-result-str
                  "team,date,points,assists,mascot
+string,number,number,number,string
 BOS,20120101,85,20,celtie
 BOS,20120102,93,23,celtie
 CHI,20120102,76,14,bullwinkle"
@@ -101,15 +106,4 @@ CHI,20120102,76,14,bullwinkle"
                 "team,date,points,assists,mascot
 BOS,20120101,85,20,celtie
 BOS,20120102,93,23,celtie")
-  
   )
-
-(link RTExecute (MError
-                 MStructures
-                 MList-Utilities
-                 MString-Utilities
-                 MParse-Queries
-                 MParse-Data
-                 MExecute
-                 TExecute))
-(invoke RTExecute)
