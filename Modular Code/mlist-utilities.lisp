@@ -5,17 +5,27 @@
 (require "specifications.lisp")
 
 (module MList-Utilities
+  ;added include-book
+  (include-book "list-utilities" :dir :teachpacks)
   
   ; Converts a character to a boolean
   (defun booleanify (x)
     (not (not x)))
   
   ; Takes the first n values of xs
+  ;  (defun first-n (n xs) 
+  ;    (if (equal 0 n)
+  ;        nil
+  ;        (cons (first xs)
+  ;              (first-n (1- n) (rest xs)))))
+  
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;Youming Lin
+  ;modified version
+  ;simplified algorithm
   (defun first-n (n xs) 
-    (if (equal 0 n)
-        nil
-        (cons (first xs)
-              (first-n (1- n) (rest xs)))))
+    (car (break-at-nth n xs)))
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
   ; Discards the first and last element of a list.
   (defun sandwich-material (xs)
@@ -37,17 +47,25 @@
   ; ->
   ; '((foo 1 2) (foo 3 4))
   ;@param delimiter - single delimiter
+  ;  (defun chunk-by (delimiter xs)
+  ;    (chunk-by-helper delimiter xs nil))
+  
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;Youming Lin
+  ;modified version
+  ;modifieid output to match the correct output
   (defun chunk-by (delimiter xs)
-    (chunk-by-helper delimiter xs nil))
+    (cdr (chunk-by-helper delimiter xs nil)))
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
   ; Removes nil values from a list
-  (defun remove-nils (xs)
-    (cond ((endp xs)
-           nil)
-          ((null (first xs))
-           (remove-nils (rest xs)))
-          (t
-           (cons (first xs)
-                 (remove-nils (rest xs))))))
+  ;  (defun remove-nils (xs)
+  ;    (cond ((endp xs)
+  ;           nil)
+  ;          ((null (first xs))
+  ;           (remove-nils (rest xs)))
+  ;          (t
+  ;           (cons (first xs)
+  ;                 (remove-nils (rest xs))))))
   
   (export IList-Utilities))

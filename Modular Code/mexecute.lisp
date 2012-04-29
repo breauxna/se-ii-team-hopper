@@ -114,25 +114,51 @@
                      (row->csv-str (rest row)))))
   
   ; Converts multiple rows to multiple strings of comma-separated values
+  ;  (defun rows->csv-strs (rows)
+  ;    (if (endp rows)
+  ;        ""
+  ;        (concatenate 'string
+  ;                     (row->csv-str (first rows))
+  ;                     (if (second rows)
+  ;                         (make-string #\NewLine)
+  ;                         "")
+  ;                     (rows->csv-strs (rest rows)))))
+  
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;Youming Lin
+  ;modified version
+  ;updated to properly format output for opening in notepad
   (defun rows->csv-strs (rows)
     (if (endp rows)
         ""
         (concatenate 'string
                      (row->csv-str (first rows))
                      (if (second rows)
-                         (make-string #\NewLine)
+                         "\r\n"
                          "")
                      (rows->csv-strs (rest rows)))))
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
+  ;  (defun query-result->str (query-result)
+  ;    (concatenate 'string
+  ;                 (row->csv-str (query-result-fields query-result))
+  ;                 (make-string #\NewLine)
+  ;                 (rows->csv-strs (query-result-rows query-result))))
+  
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;Youming Lin
+  ;modified version
+  ;updated to properly format output for opening in notepad
   (defun query-result->str (query-result)
     (concatenate 'string
                  (row->csv-str (query-result-fields query-result))
-                 (make-string #\NewLine)
+                 "\r\n"
                  (rows->csv-strs (query-result-rows query-result))))
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
-  (defun rows-query-strs->query-result-str (data-str query-str)
-    (query-result->str (rows-query->query-result (str->rows data-str)
-                                                 (str->query query-str))))
+  ;  (defun rows-query-strs->query-result-str (data-str query-str)
+  ;    (query-result->str (rows-query->query-result (str->rows data-str)
+  ;                                                 (str->query query-str))))
   
   ;@param rows - list of list of '("field" . value) pairs, i.e.
   ;'((("team" . "BOS") ("date" . 20120101) ("points" . 85) ("assists" . 20))
@@ -140,15 +166,28 @@
   ;  (("team" . "CHI") ("date" . 20120102) ("points" . 76) ("assists" . 14)))
   ;@param queries - list of query objects, i.e. '((query ("team" "date" "points") (= (:field "date") (:literal 20120101))))
   ;@return string for output, i.e. "team,date,points\nBOS,20120101,85\n \n"
+  ;  (defun queries->query-results-str (rows queries)
+  ;    (if (endp queries)
+  ;        ""
+  ;        (concatenate 'string
+  ;                     (query-result->str (rows-query->query-result rows (first queries)))
+  ;                     (make-string #\NewLine)
+  ;                     " "
+  ;                     (make-string #\NewLine)
+  ;                     (queries->query-results-str rows (rest queries)))))
+  
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;Youming Lin
+  ;modified version
+  ;updated to properly format output for opening in notepad
   (defun queries->query-results-str (rows queries)
     (if (endp queries)
         ""
         (concatenate 'string
                      (query-result->str (rows-query->query-result rows (first queries)))
-                     (make-string #\NewLine)
-                     " "
-                     (make-string #\NewLine)
+                     "\r\n \r\n"
                      (queries->query-results-str rows (rest queries)))))
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
   ; Takes a queries string and a data string and generates
   ; a single query-results string containing the result of each query

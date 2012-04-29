@@ -1,4 +1,5 @@
 team,date,points,assists,rebounds
+string,number,number,number,number
 BOS,20120101,94,26,41
 CHI,20120101,104,24,55
 LAL,20120101,90,19,44
