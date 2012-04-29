@@ -3,7 +3,7 @@
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
 #reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
 ;@author Nathan Breaux, Youming Lin, Kyle Morse
-;@date Apr 8, 2012
+;@date Apr 28, 2012
 ;@version 1.0
 
 ;Specifications files
@@ -59,22 +59,22 @@
   (sig is-field (token))
   
   ; Returns true if token is a string.
-  (sig is-string (token))
+  ;(sig is-string (token))
   
   ; Returns true if token is a literal (a number)
-  (sig is-literal (token))
+  ;(sig is-literal (token))
   
   ; Parses a list of tokens into an expression
   (sig tokens->expression (tokens))
   
   ; Parses a string into a predicate
-  (sig str->expression (str))
-  (sig parse-fields (tkns))
+  ;(sig str->expression (str))
+  ;(sig parse-fields (tkns))
   
   
   (sig parse-query-tkns (tkns))
   
-  (sig str->query (str))
+  ;(sig str->query (str))
   
   (sig tknss->queries (tknss))
   
@@ -126,7 +126,7 @@
   
   (sig query-result->str (query-result))
   
-  (sig rows-query-strs->query-result-str (data-str query-str))
+  ;(sig rows-query-strs->query-result-str (data-str query-str))
   
   (sig queries->query-results-str (rows queries))
   
@@ -149,7 +149,8 @@
   
   (sig chunk-by (delimiter xs))
   
-  (sig remove-nils (xs)))
+  ;(sig remove-nils (xs))
+  )
 
 (interface IString-Utilities
   

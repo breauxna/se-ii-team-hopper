@@ -1,4 +1,0 @@
-team,date,points,assists
-BOS,20120101,85,20
-BOS,20120102,93,23
-CHI,20120102,76,14
