@@ -1,9 +1,8 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-(require "IList-Utilities.lisp")
-(require "MList-Utilities.lisp")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+(require "specifications.lisp")
 
 (module TList-Utilities
   
@@ -23,10 +22,4 @@
                 nil)
   (check-expect (sandwich-material nil)
                 nil)
-  
-  
-  
   )
-
-(link RTList-Utilities (MList-Utilities TList-Utilities))
-(invoke RTList-Utilities)

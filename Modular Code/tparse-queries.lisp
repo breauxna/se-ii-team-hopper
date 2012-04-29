@@ -1,25 +1,40 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
-(require "IParse-Queries.lisp")
-(require "MParse-Queries.lisp")
-(require "IString-Utilities.lisp")
-(require "MString-Utilities.lisp")
-(require "IList-Utilities.lisp")
-(require "MList-Utilities.lisp")
-(require "IError.lisp")
-(require "MError.lisp")
-(require "IStructures.lisp")
-(require "MStructures.lisp")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
+(require "specifications.lisp")
 
 (module TParse-Queries
-  
+  (import IError)
   (import IParse-Queries)
   (import IStructures)
   
   (include-book "testing" :dir :teachpacks)
   (include-book "doublecheck" :dir :teachpacks)
+  
+  ; Parses a string into a predicate expression
+  (defun str->expression (str)
+    (tokens->expression (tokenize str)))
+  
+  ; Parses in a list of fields
+  ; TODO: make this more elegant and include error checking
+  ;@param tkns - list of tokens with commas, i.e. ("team" "," "date" "," "points")
+  ;@return list of tokens without commas, i.e. '("team" "date" "points")
+  (defun parse-fields (tkns)
+    (cond ((endp tkns)
+           nil)
+          ((equal (first tkns) ",")
+           (parse-fields (rest tkns)))
+          (t
+           (cons (first tkns)
+                 (parse-fields (rest tkns))))))
+  
+  ;Converts a string to a query
+  (defun str->query (str)
+    (let ((tkns (tokenize str)))
+      (if (error-p tkns)
+          tkns
+          (parse-query-tkns tkns))))
   
   (check-expect (tokenize "dogs are great")
                 '("dogs" "are" "great"))
@@ -78,14 +93,4 @@ WHERE field1 < 3")
                   (query ("field1" "field2") 
                          (< (:field "field1") 
                             (:literal 3)))))
-  
-  
   )
-
-(link RTParse-Queries (MStructures
-                       MError
-                       MList-Utilities
-                       MString-Utilities
-                       MParse-Queries 
-                       TParse-Queries))
-(invoke RTParse-Queries)
