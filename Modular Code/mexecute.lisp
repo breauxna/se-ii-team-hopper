@@ -1,11 +1,10 @@
 ;; The first four lines of this file were added by Dracula.
 ;; They tell DrScheme that this is a Dracula Modular ACL2 program.
 ;; Leave these lines unchanged so that DrScheme can properly load this file.
-#reader(planet "reader.rkt" ("cce" "dracula.plt") "modular" "lang")
+#reader(planet "reader.ss" ("cce" "dracula.plt") "modular" "lang")
 (require "specifications.lisp")
 
 (module MExecute
-  
   (import IStructures)
   (import IString-Utilities)
   (import IList-Utilities)
@@ -113,18 +112,7 @@
                          "") ;don't put comma on the last one
                      (row->csv-str (rest row)))))
   
-  ; Converts multiple rows to multiple strings of comma-separated values
-  ;  (defun rows->csv-strs (rows)
-  ;    (if (endp rows)
-  ;        ""
-  ;        (concatenate 'string
-  ;                     (row->csv-str (first rows))
-  ;                     (if (second rows)
-  ;                         (make-string #\NewLine)
-  ;                         "")
-  ;                     (rows->csv-strs (rest rows)))))
-  
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;Youming Lin
   ;modified version
   ;updated to properly format output for opening in notepad
@@ -137,15 +125,7 @@
                          "\r\n"
                          "")
                      (rows->csv-strs (rest rows)))))
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  
-  ;  (defun query-result->str (query-result)
-  ;    (concatenate 'string
-  ;                 (row->csv-str (query-result-fields query-result))
-  ;                 (make-string #\NewLine)
-  ;                 (rows->csv-strs (query-result-rows query-result))))
-  
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ 
   ;Youming Lin
   ;modified version
   ;updated to properly format output for opening in notepad
@@ -154,29 +134,7 @@
                  (row->csv-str (query-result-fields query-result))
                  "\r\n"
                  (rows->csv-strs (query-result-rows query-result))))
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  
-  ;  (defun rows-query-strs->query-result-str (data-str query-str)
-  ;    (query-result->str (rows-query->query-result (str->rows data-str)
-  ;                                                 (str->query query-str))))
-  
-  ;@param rows - list of list of '("field" . value) pairs, i.e.
-  ;'((("team" . "BOS") ("date" . 20120101) ("points" . 85) ("assists" . 20))
-  ;  (("team" . "BOS") ("date" . 20120102) ("points" . 93) ("assists" . 23))
-  ;  (("team" . "CHI") ("date" . 20120102) ("points" . 76) ("assists" . 14)))
-  ;@param queries - list of query objects, i.e. '((query ("team" "date" "points") (= (:field "date") (:literal 20120101))))
-  ;@return string for output, i.e. "team,date,points\nBOS,20120101,85\n \n"
-  ;  (defun queries->query-results-str (rows queries)
-  ;    (if (endp queries)
-  ;        ""
-  ;        (concatenate 'string
-  ;                     (query-result->str (rows-query->query-result rows (first queries)))
-  ;                     (make-string #\NewLine)
-  ;                     " "
-  ;                     (make-string #\NewLine)
-  ;                     (queries->query-results-str rows (rest queries)))))
-  
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ 
   ;Youming Lin
   ;modified version
   ;updated to properly format output for opening in notepad
