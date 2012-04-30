@@ -5,7 +5,6 @@
 (require "specifications.lisp")
 
 (module MStructures
-  
   (defstructure query
     fields
     filter)

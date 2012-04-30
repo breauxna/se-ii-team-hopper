@@ -48,7 +48,7 @@
                    (if keyword
                        (error-cons keyword (tokenize-chrs remainder))
                        (make-error (string+ (list "Unexpected character: " (first cs)))))))))
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
   ; Tokenizes a string
   ;@param str - string, i.e. "SELECT team,date,points\r\nWHERE date = 20120101"
@@ -58,7 +58,6 @@
       (if (error-p tokens)
           tokens
           (chrss->strs tokens))))
-  
   
   (defun infix-splitting-index-helper (target tokens paren-depth index)
     (cond ((endp tokens)
@@ -160,12 +159,6 @@
         nil
         (cons (parse-query-tkns (first tknss))
               (tknss->queries (rest tknss)))))
-  
-  ; Converts a string to a list of queries
-  ;@param str - string, i.e. "SELECT team,date,points\r\nWHERE date = 20120101"
-  ;@return list of query objects, i.e. '((query ("team" "date" "points") (= (:field "date") (:literal 20120101))))
-  ;  (defun str->queries (str)
-  ;    (tknss->queries (remove-nils (chunk-by "SELECT" (tokenize str)))))
   
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;Youming Lin
