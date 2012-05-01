@@ -5,6 +5,7 @@
 (require "specifications.lisp")
 
 (module MExecute
+  (import IError)
   (import IStructures)
   (import IString-Utilities)
   (import IList-Utilities)
@@ -39,7 +40,6 @@
       ; atomic level
       (:field (cdr (assoc-equal (second predicate) row))) ; a value in the row (data)
       (:literal (second predicate))))                     ; a user-entered value
-  
   
   ; Filters a list of rows into only those rows which match the filter
   ;@param rows - list of list of '("field" . value) pairs, i.e.
@@ -112,7 +112,7 @@
                          "") ;don't put comma on the last one
                      (row->csv-str (rest row)))))
   
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;Youming Lin
   ;modified version
   ;updated to properly format output for opening in notepad
@@ -125,7 +125,7 @@
                          "\r\n"
                          "")
                      (rows->csv-strs (rest rows)))))
- 
+  
   ;Youming Lin
   ;modified version
   ;updated to properly format output for opening in notepad
@@ -134,7 +134,7 @@
                  (row->csv-str (query-result-fields query-result))
                  "\r\n"
                  (rows->csv-strs (query-result-rows query-result))))
- 
+  
   ;Youming Lin
   ;modified version
   ;updated to properly format output for opening in notepad
@@ -145,17 +145,21 @@
                      (query-result->str (rows-query->query-result rows (first queries)))
                      "\r\n \r\n"
                      (queries->query-results-str rows (rest queries)))))
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
+  ;Youming Lin
+  ;modified version
+  ;updated to include error checking
   ; Takes a queries string and a data string and generates
   ; a single query-results string containing the result of each query
   ;@param data-str - string, ie. "team,date,points,assists\r\nBOS,20120101,85,20\r\nBOS,20120102,93,23\r\nCHI,20120102,76,14"
   ;@param queries-str - string, i.e. "SELECT team,date,points\r\nWHERE date = 20120101"
   ;@return string for output, i.e. "team,date,points\nBOS,20120101,85\n \n"
   (defun queries-data-str->query-results-str (data-str queries-str)
-    (queries->query-results-str (str->rows data-str)
-                                (str->queries queries-str)))
-  
-  
+    (let ((rows (str->rows data-str)))
+      (if (error-p rows)
+          (cdr rows)
+          (queries->query-results-str (str->rows data-str)
+                                      (str->queries queries-str)))))
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
   (export IExecute))
