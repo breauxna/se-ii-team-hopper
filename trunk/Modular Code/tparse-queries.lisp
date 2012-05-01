@@ -85,7 +85,7 @@ WHERE field1 > 3")
                            (:literal 3))))
   
   (check-expect (str->queries "SELECT field1,field2 
-WHERE field1 > 3 SELECT field1,field2 
+WHERE field1 > 3 SELECT field1,field2
 WHERE field1 < 3")
                 '((query ("field1" "field2") 
                          (> (:field "field1") 

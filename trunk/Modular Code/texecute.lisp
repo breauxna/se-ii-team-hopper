@@ -42,10 +42,12 @@ BOS,20120101,85,20,celtie
 BOS,20120102,93,23,celtie
 CHI,20120102,76,14,bullwinkle"))
   
-  (defconst *testqueryresult* 
-    (query-result '("team" "date" "poi
-nts" "assists" "mascot")
-                  '(("BOS" 20120101 85 20 "celtie") ("BOS" 20120102 93 23 "celtie"))))
+  (defconst *wrongtype* 
+    (str->rows "team,date,points,assists,mascot
+string,number,number,number,string
+BOS,20120101,85,dfsd,celtie
+BOS,20120102,93,23,celtie
+CHI,20120102,76,14,bullwinkle"))
   
   (defconst *testquery* (str->query "SELECT team,date WHERE team = \"BOS\""))
   

@@ -8,6 +8,7 @@
   (include-book "list-utilities" :dir :teachpacks)
   (include-book "io-utilities" :dir :teachpacks)
   
+  (import IError)
   (import IImprovements)
   (import IString-Utilities)
   
@@ -56,7 +57,7 @@
               (tknss->rows header-tkns (rest str-tknss)))))
   
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;kyle
+  ;kyle, Youming Lin
   ; Given a list of types and a single row of data it will
   ; check the row to make sure it is the right length and
   ; are made up of the right types
@@ -65,16 +66,17 @@
   ;@return t or nil based on if it passes tests
   (defun right-types (types row)
     (if (and (consp types) (consp row))
-        (if (and (string-equal (car types) "string") (stringp (car row)))
+        (if (or (and (string-equal (car types) "string")
+                     (stringp (car row)))
+                (and (string-equal (car types) "number")
+                     (is-numeric (car row))))
             (right-types (cdr types) (cdr row))
-            (if (and (string-equal (car types) "number") (is-numeric (car row)))
-                (right-types (cdr types) (cdr row))
-                nil))
-        (if (or (consp types) (consp row))
-            nil
-            t)))
+            (make-error "Incorrect data type!"))
+        (if (and (endp types) (endp row))
+            t
+            (make-error "Incorrect number of columns!"))))
   
-  ;kyle
+  ;kyle, Youming Lin
   ; Given a list of types and a list of rows it will
   ; check each row to make sure it is the right length and
   ; are made up of the right types
@@ -83,12 +85,13 @@
   ;@return t or nil based on if it passes tests
   (defun right-data (types rows)
     (if (consp rows)
-        (if (right-types types (car rows))
-            (right-data types (cdr rows))
-            nil)
+        (let ((type-check (right-types types (car rows))))
+          (if (error-p type-check)
+              type-check
+              (right-data types (cdr rows))))
         t))
   
-  ;kyle
+  ;kyle, Youming Lin
   ; Converts the data string (with header and data)
   ; to data rows (("field1" . value1) ... ("fieldn" . value2))
   ;@param string, i.e. "team,date,points,assists\r\nstring,number,string,string\r\nBOS,20120101,85,20\r\nBOS,20120102,93,23\r\nCHI,20120102,76,14"
@@ -97,10 +100,13 @@
     (let* ((strs (break-by-line str))
            (header-tkns (str->tkns (first strs)))
            (types-tkns (str->tkns (second strs)))
-           (row-tknss (strs->tknss (cddr strs))))
-      (if (right-data types-tkns row-tknss)
-          (tknss->rows header-tkns row-tknss)
-          nil)))
+           (row-tknss (strs->tknss (cddr strs)))
+           (type-check (right-data types-tkns row-tknss)))
+      (cond
+        ((error-p type-check)
+         type-check)
+        (t
+         (tknss->rows header-tkns row-tknss)))))
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
   (export IParse-Data))
